@@ -3,11 +3,17 @@ import {
     Box,
     Center,
     NativeBaseProvider,
+    Text,
 } from 'native-base'
+import { Magnetometer } from 'expo-sensors'
 
 const Compass = () => {
+
+    
+
     return (
         <Box>
+            <Text style={{color: 'white'}}>{x}</Text>
             {/* Compass Traingle Pointer */}
             <Center style={{marginBottom: 5}}>
                 <Box style={{width: 0,
