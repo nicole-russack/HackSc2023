@@ -5,9 +5,12 @@ import {
     NativeBaseProvider,
 } from 'native-base'
 
-const Compass = () => {
+const Compass = ({rotation}) => {
+
+    console.log(rotation)
+
     return (
-        <Box>
+        <Box style={{transform: [{rotate: `${rotation}deg`}]}}>
             {/* Compass Traingle Pointer */}
             <Center style={{marginBottom: 5}}>
                 <Box style={{width: 0,

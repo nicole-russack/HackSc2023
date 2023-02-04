@@ -104,7 +104,7 @@ const App = () => {
       
       <Center style={{width: '100%', height: '100%', backgroundColor: 'black'}}>
         <Text style={{color: 'white', fontSize: '30pt', lineHeight: 100 }}>{heading}°</Text>
-        <Compass />
+        <Compass rotation={-heading}/>
       </Center>
 
     </NativeBaseProvider>
