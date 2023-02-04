@@ -10,10 +10,14 @@ import {
   NativeBaseProvider,
   extendTheme,
   VStack,
+  View,
   Box,
 } from "native-base"
 import NativeBaseIcon from "./components/NativeBaseIcon"
 import { Platform } from "react-native"
+
+// components
+import Compass from './components/Compass'
 
 // Define the config
 const config = {
@@ -27,7 +31,7 @@ export const theme = extendTheme({ config })
 const App = () => {
   return (
     <NativeBaseProvider>
-      <Center
+      {/* <Center
         _dark={{ bg: "blueGray.900" }}
         _light={{ bg: "blueGray.50" }}
         px={4}
@@ -60,12 +64,11 @@ const App = () => {
             </Text>
           </Link>
         </VStack>
-      </Center>
-
-      {/* <Center>
-        <Box style={{}}>
-        </Box>
       </Center> */}
+
+      <Center style={{width: '100%', height: '100%', backgroundColor: 'black'}}>
+        <Compass />
+      </Center>
 
     </NativeBaseProvider>
   )
