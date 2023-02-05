@@ -31,13 +31,14 @@ const App = () => {
   const [azimuth, setAzimuth] = useState(0);
   const [altitude, setAltitude] = useState(1);
   const [heading, setHeading] = useState(0);
-
   const [pitch, setPitch] = useState(0);
+  
   var year = moment().utcOffset('-08:00').format('YYYY')
   var month = moment().utcOffset('-08:00').format('MM')
   var day = moment().utcOffset('-08:00').format('DD')
-  var hour = moment().utcOffset('-08:00').format('HH') -8 
+  var hour = moment().utcOffset('-08:00').format('HH') 
   var minute = moment().utcOffset('-08:00').format('mm')
+  
   const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
   const [url, setUrl] = useState(null);
@@ -58,6 +59,7 @@ const App = () => {
 
       setLocation(location);
       const tempUrl = 'http://unpaul.pythonanywhere.com/planet?year=' + year + '&month=' + month + '&day=' + day + '&hour=' + hour + '&minute=' + minute + '&planet=moon&lat=' + location.coords.latitude + '&lng=' + location.coords.longitude;
+      console.log(tempUrl);
       setUrl(tempUrl);
       
       fetch(tempUrl, {
@@ -103,6 +105,7 @@ const App = () => {
     months: 0,
     years: 0
   })
+
   const setTimeOffsetDataCB = (data) => {
     setTimeOffsetData(data)
   }
@@ -112,8 +115,7 @@ const App = () => {
 
         {location ?
           <Center style={{width: '100%', height: '100%', backgroundColor: 'black'}}>
-            <Pointer />
-            <Text style = {{color:'white'}}> {data} </Text>
+            <Pointer color={Math.round(heading) === Math.round(azimuth) ? '#4ced28' : 'white'}/>
             <Compass azimuth={azimuth} onHeadingChange={handleHeadingChange} />
             <Altimeter targetPitch={altitude} onPitchChange={handlePitchChange} />
             <Galaxy rotation={heading}/>
