@@ -27,17 +27,41 @@ const CompassInfo = (props) => {
     const [celestialObjects, setCelestialObjects] = useState({
         planets: [
         {
-            name: 'Mercury',
+            name: 'Moon',
         },
         {
             name: 'Venus',
         },
         {
-            name: 'Earth',
+            name: 'Saturn',
         },
         {
             name: 'Mars',
         },
+        {
+            name: 'Mercury',
+        },
+        {
+          name: 'Neptune',
+      },
+      {
+        name: 'Jupiter',
+    },
+    {
+      name: 'Uranus',
+  },
+  {
+    name: 'Barnard\'s Star',
+},
+{
+  name: 'Betelgeuse',
+},
+{
+  name: 'Sirius',
+},
+{
+  name: 'Polaris',
+},
         ],
         moons: [
 
