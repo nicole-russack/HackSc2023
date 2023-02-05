@@ -151,15 +151,35 @@ const CompassInfo = ({ onActiveObjectChange, onTimeOffsetData }) => {
         bounciness: 0,
         useNativeDriver: false,
     })
-
     const openSuggestionsBox = () => {
         setSuggestionBoxIsOpen(true)
         openSuggestionsBoxAnimation.start()
     }
-
     const closeSuggestionsBox = () => {
         setSuggestionBoxIsOpen(false)
         closeSuggestionsBoxAnimation.start()
+    }
+
+    // time menu height animation
+    const timeMenuHeight = useRef(new Animated.Value(0)).current;
+    const openTimeMenuAnimation = Animated.spring(timeMenuHeight, {
+        toValue: 300,
+        speed: 20,
+        useNativeDriver: false,
+    })
+    const closeTimeMenuAnimation = Animated.spring(timeMenuHeight, {
+        toValue: 0,
+        speed: 10,
+        bounciness: 0,
+        useNativeDriver: false,
+    })
+    const openTimeMenu = () => {
+        setIsTimeMenuOpen(true)
+        openTimeMenuAnimation.start()
+    }
+    const closeTimeMenu = () => {
+        setIsTimeMenuOpen(false)
+        closeTimeMenuAnimation.start()
     }
 
     // when user presses enter in object search bar
@@ -196,7 +216,7 @@ const CompassInfo = ({ onActiveObjectChange, onTimeOffsetData }) => {
     const handleSubmitTime = () => {
 
         // close time menu
-        setIsTimeMenuOpen(false)
+        openTimeMenu()
 
         // submit data
         onTimeOffsetData({
@@ -223,69 +243,73 @@ const CompassInfo = ({ onActiveObjectChange, onTimeOffsetData }) => {
           <Container style={{overflow: 'hidden'}}>
 
             {/* Celestial Object Search */}
-            <Input variant='underlined' size='md' placeholder='Celestial object...' style={{color: 'white', marginLeft: 10, zIndex: 30}} onChangeText={handleChangeObjectInput}
-              InputLeftElement={<Icon as={Ionicons} name="search" size='md' color='white' />} onPressOut={openSuggestionsBox} onSubmitEditing={handleSearchSubmit}
-              value={objectInput} />
+            {!isTimeMenuOpen ?
+                <Input variant='underlined' size='md' placeholder='Celestial object...' style={{color: 'white', marginLeft: 10, marginTop: 0, zIndex: 30}} onChangeText={handleChangeObjectInput}
+                InputLeftElement={<Icon as={Ionicons} name="search" size='md' color='white' />} onPressOut={openSuggestionsBox} onSubmitEditing={handleSearchSubmit}
+                value={objectInput} /> : null
+            }
             
             {/* Suggestions Box - only viewable while user typing */}
-            <Animated.View style={{display: 'flex', borderWidth: 5, height: suggestionsBoxHeight, width: 400, padding: 10, overflow: 'hidden'}}>
-              <ScrollView style={{overflow: 'hidden'}} keyboardShouldPersistTaps='handled'>
-                {memoizedObjectsFiltered}
-              </ScrollView>
-            </Animated.View>
+            {!isTimeMenuOpen ?
+                <Animated.View style={{display: 'flex', borderWidth: 5, height: suggestionsBoxHeight, width: 400, padding: 10, overflow: 'hidden'}}>
+                    <ScrollView style={{overflow: 'hidden'}} keyboardShouldPersistTaps='handled'>
+                    {memoizedObjectsFiltered}
+                    </ScrollView>
+              </Animated.View> : null
+            }
 
             {/* Active Object - only viewable if selected */}
             {activeObject ? 
               <Box style={{width: 400}}>
-                <Box style={{display: 'flex', width: 400, alignItems: 'flex-start'}}>
-                  <IconButton icon={<Icon as={Ionicons} name="time" size='md' color='white' />} onPress={() => setIsTimeMenuOpen(!isTimeMenuOpen)} />
-                </Box>
+                {!suggestionsBoxIsOpen ?
+                    <Box style={{display: 'flex', width: 400, alignItems: 'flex-start'}}>
+                        <IconButton icon={<Icon as={Ionicons} name="time" size='md' color='white' />} onPress={() => isTimeMenuOpen ? closeTimeMenu() : openTimeMenu()} />
+                    </Box> : null
+                }
 
                 {/* Time Menu */}
-                {isTimeMenuOpen ?
-                  <Box style={{width: 300, padding: 20}}>
+                <Animated.View style={{width: 300, padding: 20, height: timeMenuHeight, overflow: 'hidden'}}>
 
-                  <VStack>
-                    <Text style={{color: 'gray'}}>Hours: {hoursOffset}</Text>
-                    <Slider size='md' onChange={(newValue) => setHoursOffset(newValue)} defaultValue={0} minValue={-23} maxValue={23}>
-                      <Slider.Track>
-                        <Slider.FilledTrack />
-                      </Slider.Track>
-                      <Slider.Thumb style={{backgroundColor: 'gray'}} />
-                    </Slider>
+                    <VStack style={{overflow: 'hidden'}}>
+                        <Text style={{color: 'gray'}}>Hours: {hoursOffset}</Text>
+                        <Slider size='md' onChange={(newValue) => setHoursOffset(newValue)} defaultValue={0} minValue={-23} maxValue={23}>
+                        <Slider.Track>
+                            <Slider.FilledTrack />
+                        </Slider.Track>
+                        <Slider.Thumb style={{backgroundColor: 'gray'}} />
+                        </Slider>
 
-                    <Text style={{color: 'gray'}}>Days: {daysOffset}</Text>
-                    <Slider size='md' onChange={(newValue) => setDaysOffset(newValue)} defaultValue={0} minValue={-30} maxValue={30}>
-                      <Slider.Track>
-                        <Slider.FilledTrack />
-                      </Slider.Track>
-                      <Slider.Thumb style={{backgroundColor: 'gray'}} />
-                    </Slider>
+                        <Text style={{color: 'gray'}}>Days: {daysOffset}</Text>
+                        <Slider size='md' onChange={(newValue) => setDaysOffset(newValue)} defaultValue={0} minValue={-30} maxValue={30}>
+                        <Slider.Track>
+                            <Slider.FilledTrack />
+                        </Slider.Track>
+                        <Slider.Thumb style={{backgroundColor: 'gray'}} />
+                        </Slider>
 
-                    <Text style={{color: 'gray'}}>Months: {monthsOffset}</Text>
-                    <Slider size='md' onChange={(newValue) => setMonthsOffset(newValue)} defaultValue={0} minValue={-11} maxValue={11}>
-                      <Slider.Track>
-                        <Slider.FilledTrack />
-                      </Slider.Track>
-                      <Slider.Thumb style={{backgroundColor: 'gray'}} />
-                    </Slider>
+                        <Text style={{color: 'gray'}}>Months: {monthsOffset}</Text>
+                        <Slider size='md' onChange={(newValue) => setMonthsOffset(newValue)} defaultValue={0} minValue={-11} maxValue={11}>
+                        <Slider.Track>
+                            <Slider.FilledTrack />
+                        </Slider.Track>
+                        <Slider.Thumb style={{backgroundColor: 'gray'}} />
+                        </Slider>
 
-                    <Text style={{color: 'gray'}}>Years: {yearsOffset}</Text>
-                    <Slider size='md' onChange={(newValue) => setYearsOffset(newValue)} defaultValue={0} minValue={-123} maxValue={27}>
-                      <Slider.Track>
-                        <Slider.FilledTrack />
-                      </Slider.Track>
-                      <Slider.Thumb style={{backgroundColor: 'gray'}} />
-                    </Slider>
+                        <Text style={{color: 'gray'}}>Years: {yearsOffset}</Text>
+                        <Slider size='md' onChange={(newValue) => setYearsOffset(newValue)} defaultValue={0} minValue={-123} maxValue={27}>
+                        <Slider.Track>
+                            <Slider.FilledTrack />
+                        </Slider.Track>
+                        <Slider.Thumb style={{backgroundColor: 'gray'}} />
+                        </Slider>
 
-                  <Box style={{alignItems: 'flex-end', marginTop: 20}}>
-                    <Button onPress={handleSubmitTime}>Calculate</Button>
-                  </Box>
+                    <Box style={{alignItems: 'flex-end', marginTop: 20}}>
+                        <Button onPress={handleSubmitTime}>Locate</Button>
+                    </Box>
 
-                  </VStack>
+                    </VStack>
 
-                  </Box> : null
-                }
+                </Animated.View>
               </Box> : null
             }
 
