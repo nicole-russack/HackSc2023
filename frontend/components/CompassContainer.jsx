@@ -20,7 +20,7 @@ const CompassContainer = ({ azimuth }) => {
   return (
     <Center style={{
       position: 'position',
-      transform: [{translateY: 160}]
+      transform: [{translateY: 162}]
     }}>
       <Pointer color={Math.round(heading) - Math.round(azimuth) === 0 ? '#4ced28' : 'white'}/>
       <Compass azimuth={azimuth} onHeadingChange={handleHeadingChange} />
