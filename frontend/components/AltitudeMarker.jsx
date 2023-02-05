@@ -22,7 +22,7 @@ const AltitudeMarker = ({ altitude, targetAltitude }) => {
     width: size,
     height: size,
     borderRadius: 325,
-    transform: [{translateY: 82}]
+    transform: [{translateY: 55}]
   }
 
   return (

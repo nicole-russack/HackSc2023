@@ -21,7 +21,7 @@ import { Ionicons } from '@expo/vector-icons'
 // services
 import celestialObjectsServices from '../services/celestialObjectsServices'
 
-const CompassInfo = (props) => {
+const CompassInfo = ({ onActiveObjectChange, onTimeOffsetData }) => {
 
     // objects
     const [celestialObjects, setCelestialObjects] = useState({
@@ -118,8 +118,8 @@ const CompassInfo = (props) => {
     }
     const handleChangeObjectInput = (newObjectInput) => {
         if (activeObject) {
-            setActiveObject(null)
-            props.setActiveObject(null)
+            onActiveObjectChange(null)
+            onActiveObjectChange(null)
         }
         // set input
         setObjectInput(newObjectInput)
@@ -163,8 +163,8 @@ const CompassInfo = (props) => {
 
     // when user presses enter in object search bar
     const handleSearchSubmit = () => {
-        setActiveObject(null)
-        props.setActiveObject(null)
+        onActiveObjectChange(null)
+        onActiveObjectChange(null)
         closeSuggestionsBox()
     }
 
@@ -175,8 +175,8 @@ const CompassInfo = (props) => {
         console.log('activate ' + filteredObjectIndex)
 
         // set active object
-        setActiveObject(objectsFiltered[filteredObjectIndex])
-        props.setActiveObject(objectsFiltered[filteredObjectIndex])
+        onActiveObjectChange(objectsFiltered[filteredObjectIndex])
+        onActiveObjectChange(objectsFiltered[filteredObjectIndex])
 
         // set objectInput to object name
         setObjectInput(objectsFiltered[filteredObjectIndex].name)
@@ -200,7 +200,7 @@ const CompassInfo = (props) => {
         setIsTimeMenuOpen(false)
 
         // submit data
-        props.setTimeOffsetData({
+        onTimeOffsetData({
             hours: hoursOffset,
             datys: daysOffset,
             months: monthsOffset,

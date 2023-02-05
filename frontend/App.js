@@ -16,6 +16,7 @@ import Pointer from "./components/Pointer"
 import Galaxy from "./components/Galaxy"
 import Altimeter from "./components/Altimeter"
 import CompassInfo from './components/CompassInfo'
+import CompassContainer from "./components/CompassContainer";
 
 // Define the config
 const config = {
@@ -29,15 +30,14 @@ export const theme = extendTheme({ config })
 const App = () => {
 
   const [azimuth, setAzimuth] = useState(0);
-  const [altitude, setAltitude] = useState(0);
-  const [heading, setHeading] = useState(0);
-
-  const [pitch, setPitch] = useState(0);
+  const [altitude, setAltitude] = useState(1);
+  
   var year = moment().utcOffset('-08:00').format('YYYY')
   var month = moment().utcOffset('-08:00').format('MM')
   var day = moment().utcOffset('-08:00').format('DD')
-  var hour = moment().utcOffset('-08:00').format('HH') -8 
+  var hour = moment().utcOffset('-08:00').format('HH') 
   var minute = moment().utcOffset('-08:00').format('mm')
+  
   const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
   const [url, setUrl] = useState(null);
@@ -80,8 +80,10 @@ const App = () => {
       let location = await Location.getCurrentPositionAsync({
         accuracy: Location.Accuracy.Low 
       });
+
       setLocation(location);
       const tempUrl = 'http://unpaul.pythonanywhere.com/planet?year=' + year + '&month=' + month + '&day=' + day + '&hour=' + hour + '&minute=' + minute + '&planet=moon&lat=' + location.coords.latitude + '&lng=' + location.coords.longitude;
+      console.log(tempUrl);
       setUrl(tempUrl);
       
       fetch(tempUrl, {
@@ -90,6 +92,7 @@ const App = () => {
       .then(resp => resp.json())
       .then(article => {
         setAzimuth(article.azimuth);
+        console.log(article.altitude);
         setAltitude(article.altitude);
       })
 
@@ -103,50 +106,12 @@ const App = () => {
     text = JSON.stringify(location);
   }
 
-
   const [data, setData] = useState();
-//Call Once when Screen loads
-useEffect(() => {
-  //Subscribe Function
-  _subscribe();
-  //Call Once when Screen unloads
-  return () => {
-    _unsubscribe(); //Unsubscribe Function
-  };
-}, []);
-
-//SetInterval between listening of 2 DeviceMotion Action
-const _setInterval = () => {
-  DeviceMotion.setUpdateInterval(77);
-};
-
-const _subscribe = () => {
-  //Adding the Listener
-  DeviceMotion.addListener((devicemotionData) => {
-   
-    setData(devicemotionData.rotation.beta * 180/3.14); 
-  });
-  //Calling setInterval Function after adding the listener
-  _setInterval();
-};
-
-const _unsubscribe = () => {
-  //Removing all the listeners at end of screen unload
-  DeviceMotion.removeAllListeners();
-};
-  
-
-  const handleHeadingChange = heading => {
-    setHeading(heading);
-
-  };
-
-  const handlePitchChange = newPitch => {
-    setPitch(newPitch);
-  }
 
   // keep track of active ojbect
   const [activeObject, setActiveObject] = useState(null)
+  
+  // passed into CompassInfo
   const setActiveObjectCB = (object) => {
     setActiveObject(object)
   }
@@ -158,6 +123,8 @@ const _unsubscribe = () => {
     months: 0,
     years: 0
   })
+
+  // passed into CompassInfo
   const setTimeOffsetDataCB = (data) => {
     setTimeOffsetData(data)
   }
@@ -167,18 +134,15 @@ const _unsubscribe = () => {
 
         {location ?
           <Center style={{width: '100%', height: '100%', backgroundColor: 'black'}}>
-          <CompassInfo setActiveObject={setActiveObjectCB} setTimeOffsetData={setTimeOffsetDataCB} />
-        <Pointer />
-          <Text style = {{color:'white'}}> {data} </Text>
-          <Compass azimuth={azimuth} onHeadingChange={handleHeadingChange} />
-          <Galaxy rotation={heading}/>
-     </Center> 
-     :
-      <Center style={{width: '100%', height: '100%', backgroundColor: 'black'}}>
-      <Text style={{color:'white'}}>Loading....</Text>
-      </Center> 
-      }
-       
+            <CompassInfo onActiveObjectChange={setActiveObjectCB} onTimeOffsetData={setTimeOffsetDataCB} />
+            <CompassContainer azimuth={azimuth}/>
+            <Altimeter targetPitch={altitude} />
+          </Center> 
+          :
+          <Center style={{width: '100%', height: '100%', backgroundColor: 'black'}}>
+            <Text style={{color:'white'}}>Loading....</Text>
+          </Center> 
+      }       
 
     </NativeBaseProvider>
   )
