@@ -10,6 +10,10 @@ const Pointer = ({ color }) => {
     
     return (
         <Box style={{
+        //   position: 'absolute',
+        //   transform: [{translateY: -155}],
+          position: 'relative',
+          top: 5,
           width: 3,
           height: 45,
           backgroundColor: color,

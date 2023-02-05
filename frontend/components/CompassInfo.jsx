@@ -239,7 +239,10 @@ const CompassInfo = ({ onActiveObjectChange, onTimeOffsetData, startLoading }) =
     }, [objectsFiltered])
 
     return (
-        <Center>
+        <Center style={{
+          position: 'absolute',
+          transform: [{translateY: -200}],
+        }}>
           <Container style={{overflow: 'hidden'}}>
 
             {/* Celestial Object Search */}
