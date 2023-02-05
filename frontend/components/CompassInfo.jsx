@@ -216,7 +216,7 @@ const CompassInfo = ({ onActiveObjectChange, onTimeOffsetData }) => {
     const handleSubmitTime = () => {
 
         // close time menu
-        openTimeMenu()
+        closeTimeMenu()
 
         // submit data
         onTimeOffsetData({

@@ -5,6 +5,7 @@ import {
   NativeBaseProvider,
   extendTheme,
   Box,
+  Skeleton,
 } from "native-base"
 import * as Location from "expo-location"
 import { DeviceMotion } from 'expo-sensors'; 
@@ -79,7 +80,7 @@ const App = () => {
     setActiveObject(object)
   }
 
-
+  const [isLoadingObjectData, setIsLoadingObjectData] = useState(false)
   useEffect(() => {
     (async () => {
       
@@ -114,6 +115,9 @@ const App = () => {
         
             }
             else{
+
+              setIsLoadingObjectData(true)
+              console.log('load')
               
               if(activeObject.name == 'Barnards' || activeObject.name == 'Betelgeuse' || activeObject.name == 'Sirius' || activeObject.name == 'Polaris'){
 
@@ -153,6 +157,9 @@ const App = () => {
         
             }
 
+            // done loading
+            setIsLoadingObjectData(false)
+
     })();
   }, [activeObject]);
 
@@ -189,7 +196,10 @@ const App = () => {
         {location ?
           <Center style={{width: '100%', height: '100%', backgroundColor: 'black'}}>
             <CompassInfo onActiveObjectChange={setActiveObjectCB} onTimeOffsetData={setTimeOffsetDataCB} />
+            {isLoadingObjectData ? 
+            <Skeleton style={{position: 'absolute', bottom: 225, borderRadius: 200, width: 325, height: 325}} /> :
             <CompassContainer azimuth={azimuth}/>
+            }
             <Altimeter targetPitch={altitude} />
             <Text style={{color:'white'}}>{distance} Miles Away!!!</Text>
           </Center> 
