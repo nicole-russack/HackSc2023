@@ -40,6 +40,7 @@ const App = () => {
   
   const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
+  const [distance, setDistance] = useState(null);
   const [url, setUrl] = useState(null);
 
   const theme = extendTheme({
@@ -107,6 +108,8 @@ const App = () => {
                 setAzimuth(article.azimuth);
                 console.log(article.altitude);
                 setAltitude(article.altitude);
+                setDistance(Math.round(article.distance * 92955807.3));
+
             })
         
             }
@@ -127,6 +130,7 @@ const App = () => {
                     setAzimuth(article.azimuth);
                     console.log(article.altitude);
                     setAltitude(article.altitude);
+                    setDistance(Math.round(article.distance * 92955807.3));
                   })
               }
               else{
@@ -142,6 +146,7 @@ const App = () => {
                   setAzimuth(article.azimuth);
                   console.log(article.altitude);
                   setAltitude(article.altitude);
+                  setDistance(Math.round(article.distance * 92955807.3));
                 })
 
               }
@@ -162,43 +167,7 @@ const App = () => {
     text = JSON.stringify(location);
   }
 
-  
-//   useEffect(() => {
-//     //console.log("The active object has changed to ", activeObject)
-//     if(!activeObject){
-//       const tempUrl = 'http://unpaul.pythonanywhere.com/planet?year=' + year + '&month=' + month + '&day=' + day + '&hour=' + hour + '&minute=' + minute + '&planet=' + 'moon' + '&lat=' + location.coords.latitude + '&lng=' + location.coords.longitude;
-//       console.log(tempUrl);
-//       setUrl(tempUrl);
-      
-//       fetch(tempUrl, {
-//         method:'GET'
-//       })
-//       .then(resp => resp.json())
-//       .then(article => {
-//         setAzimuth(article.azimuth);
-//         console.log(article.altitude);
-//         setAltitude(article.altitude);
-//     })
 
-//     }
-//     else{
-//       const tempUrl = 'http://unpaul.pythonanywhere.com/planet?year=' + year + '&month=' + month + '&day=' + day + '&hour=' + hour + '&minute=' + minute + '&planet=' + activeObject.name + '&lat=' + location.coords.latitude + '&lng=' + location.coords.longitude;
-//       console.log(tempUrl);
-//       setUrl(tempUrl);
-      
-//       fetch(tempUrl, {
-//         method:'GET'
-//       })
-//       .then(resp => resp.json())
-//       .then(article => {
-//         setAzimuth(article.azimuth);
-//         console.log(article.altitude);
-//         setAltitude(article.altitude);
-//     })
-
-//     }
-    
-// }, [activeObject]);
 
   // keep track of time data
   const [timeOffsetData, setTimeOffsetData] = useState({
@@ -211,6 +180,7 @@ const App = () => {
   // passed into CompassInfo
   const setTimeOffsetDataCB = (data) => {
     setTimeOffsetData(data)
+    console.log("data from date offset " , data)
   }
 
   return (
@@ -221,7 +191,7 @@ const App = () => {
             <CompassInfo onActiveObjectChange={setActiveObjectCB} onTimeOffsetData={setTimeOffsetDataCB} />
             <CompassContainer azimuth={azimuth}/>
             <Altimeter targetPitch={altitude} />
-            {/* <Text style={{color:'white'}}>Miles Away!!!</Text> */}
+            <Text style={{color:'white'}}>{distance} Miles Away!!!</Text>
           </Center> 
           :
           <Center style={{width: '100%', height: '100%', backgroundColor: 'black'}}>
