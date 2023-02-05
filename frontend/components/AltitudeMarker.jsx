@@ -5,6 +5,7 @@ import {
     Circle,
     NativeBaseProvider,
     Text,
+    View
 } from 'native-base'
 import { Dimensions } from 'react-native'
 
@@ -16,17 +17,17 @@ const AltitudeMarker = ({ altitude, targetAltitude }) => {
 
   const styles = {
     position: 'absolute',
-    backgroundColor: 'transparent',
+    backgroundColor: Math.round(altitude) === Math.round(targetAltitude) ? '#4ced2833' : '#ffffff33',
     borderWidth: 3,
     borderColor: Math.round(altitude) === Math.round(targetAltitude) ? '#4ced28' : 'white',
-    width: size,
-    height: size,
+    width: 325,
+    height: 325,
     borderRadius: 325,
-    transform: [{translateY: 55}]
+    transform: [{translateY: 228}, {translateX: 0}, {scaleX: altitude / targetAltitude}, {scaleY: altitude / targetAltitude}]
   }
 
   return (
-    <Box style={styles}></Box>
+    <View style={styles}></View>
   )
 }
 

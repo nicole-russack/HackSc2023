@@ -5,6 +5,7 @@ import {
   NativeBaseProvider,
   extendTheme,
   Box,
+  View,
 } from "native-base"
 import * as Location from "expo-location"
 import { DeviceMotion } from 'expo-sensors'; 
@@ -82,17 +83,6 @@ const App = () => {
       initialColorMode: 'dark',
     },
   })
-
-  const [data, setData] = useState();
-
-  // keep track of active ojbect
-  const [activeObject, setActiveObject] = useState(null)
-  
-  // passed into CompassInfo
-  const setActiveObjectCB = (object) => {
-    setActiveObject(object)
-  }
-
 
   useEffect(() => {
     (async () => {
