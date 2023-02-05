@@ -56,9 +56,6 @@ const App = () => {
         accuracy: Location.Accuracy.Low 
       });
       setLocation(location);
-      console.log("this is the location" , location.coords.latitude);
-      console.log("this is the location" , location.coords.longitude);
-      console.log("this is the time ", year, " ", month, " ", day);
       const tempUrl = 'http://unpaul.pythonanywhere.com/planet?year=' + year + '&month=' + month + '&day=' + day + '&hour=' + hour + '&minute=' + minute + '&planet=moon&lat=' + location.coords.latitude + '&lng=' + location.coords.longitude;
       setUrl(tempUrl);
       
@@ -67,7 +64,6 @@ const App = () => {
       })
       .then(resp => resp.json())
       .then(article => {
-        console.log(article)
         setAzimuth(article.azimuth);
         setAltitude(article.altitude);
       })
@@ -130,16 +126,23 @@ const _unsubscribe = () => {
     setActiveObject(object)
   }
 
+  // keep track of time data
+  const [timeOffsetData, setTimeOffsetData] = useState({
+    hours: 0,
+    days: 0,
+    months: 0,
+    years: 0
+  })
+  const setTimeOffsetDataCB = (data) => {
+    setTimeOffsetData(data)
+  }
+
   return (
     <NativeBaseProvider>      
-      
-     
-        {/* <Text style={{color: 'white', fontSize: '30pt', lineHeight: 100 }}>{azimuth}°</Text> */}
-
 
         {location ?
           <Center style={{width: '100%', height: '100%', backgroundColor: 'black'}}>
-          <CompassInfo setActiveObject={setActiveObjectCB} />
+          <CompassInfo setActiveObject={setActiveObjectCB} setTimeOffsetData={setTimeOffsetDataCB} />
         <Pointer />
           <Text style = {{color:'white'}}> {data} </Text>
           <Compass azimuth={azimuth} onHeadingChange={handleHeadingChange} />
