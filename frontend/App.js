@@ -85,6 +85,8 @@ const App = () => {
 
   // keep track of active ojbect
   const [activeObject, setActiveObject] = useState(null)
+  
+  // passed into CompassInfo
   const setActiveObjectCB = (object) => {
     setActiveObject(object)
   }
@@ -97,6 +99,7 @@ const App = () => {
     years: 0
   })
 
+  // passed into CompassInfo
   const setTimeOffsetDataCB = (data) => {
     setTimeOffsetData(data)
   }
@@ -106,6 +109,7 @@ const App = () => {
 
         {location ?
           <Center style={{width: '100%', height: '100%', backgroundColor: 'black'}}>
+            <CompassInfo onActiveObjectChange={setActiveObjectCB} onTimeOffsetData={setTimeOffsetDataCB} />
             <CompassContainer azimuth={azimuth}/>
             <Altimeter targetPitch={altitude} />
           </Center> 
