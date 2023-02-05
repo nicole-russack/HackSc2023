@@ -104,7 +104,7 @@ def get_stars():
                   "azimuth":data[1],
                   "distance":data[2]})
 
-#http://127.0.0.1:5000/moonPhase?year=2023&month=2&day=3&hour=12&minute=31
+#http://192.168.1.30:3000/moonPhase?year=2023&month=2&day=3&hour=12&minute=31
 @app.route('/moonPhase', methods = ["GET"])
 def getMoon():
   year = request.args.get('year')
