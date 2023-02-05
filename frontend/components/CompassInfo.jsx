@@ -181,7 +181,7 @@ const CompassInfo = (props) => {
           <Container style={{overflow: 'hidden'}}>
 
             {/* Celestial Object Search */}
-            <Input variant='underlined' size='md' placeholder='Celestial object...' style={{color: 'white', marginLeft: 10}} onChangeText={handleChangeObjectInput}
+            <Input variant='underlined' size='md' placeholder='Celestial object...' style={{color: 'white', marginLeft: 10, zIndex: 30}} onChangeText={handleChangeObjectInput}
               InputLeftElement={<Icon as={Ionicons} name="search" size='md' color='white' />} onPressOut={openSuggestionsBox} onSubmitEditing={handleSearchSubmit}
               value={objectInput} />
             

@@ -6,7 +6,7 @@ import {
     Text,
 } from 'native-base'
 import * as Location from 'expo-location'
-import { Image } from 'react-native';
+import { ImageBackground } from 'react-native';
 
 
 const Compass = ({ azimuth, onHeadingChange }) => {
@@ -49,12 +49,12 @@ const Compass = ({ azimuth, onHeadingChange }) => {
     const backgroundSize = 2400;
 
     return (
-        <Box style={{transform: [{rotate: `${-heading + azimuth}deg`}, {translateY: -12}]}}>
-            <Image 
+        <Box style={{transform: [{rotate: `${-heading + azimuth}deg`}, {translateY: -12}]}} pointerEvents='none'>
+            <ImageBackground 
                 source={require('../assets/stars5.png')} 
                 style={{
                     position: 'absolute',
-                    zIndex: -1,
+                    zIndex: -10,
                     transform: [{translateX: -backgroundSize / 3}, {translateY: -backgroundSize / 3}],
                     width: backgroundSize,
                     height: backgroundSize,

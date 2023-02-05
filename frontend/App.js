@@ -29,6 +29,8 @@ const App = () => {
   const [altitude, setAltitude] = useState(0);
   const [heading, setHeading] = useState(0)
 
+  // keep track of the active object
+  // if no object selected, will be
   const [activeObject, setActiveObject] = useState(null)
   const setActiveObjectCB = (object) => {
     setActiveObject(object)
@@ -54,6 +56,7 @@ const App = () => {
     <NativeBaseProvider>      
       <Center style={{width: '100%', height: '100%', backgroundColor: 'black'}}>
         {/* <Text style={{color: 'white', fontSize: '30pt', lineHeight: 100 }}>{azimuth}°</Text> */}
+        <CompassInfo setActiveObject={setActiveObjectCB} />
         <Pointer />
         <Compass azimuth={azimuth} onHeadingChange={handleHeadingChange} />
         <Galaxy rotation={heading}/>
