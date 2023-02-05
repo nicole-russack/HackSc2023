@@ -60,7 +60,9 @@ const App = () => {
         return;
       }
 
-      let location = await Location.getCurrentPositionAsync({});
+      let location = await Location.getCurrentPositionAsync({
+        accuracy: Location.Accuracy.Low 
+      });
       setLocation(location);
       console.log("this is the location" , location.coords.latitude);
       console.log("this is the location" , location.coords.longitude);
@@ -141,13 +143,18 @@ const _unsubscribe = () => {
      
         {/* <Text style={{color: 'white', fontSize: '30pt', lineHeight: 100 }}>{azimuth}°</Text> */}
 
-        {location &&
+
+        {location ?
           <Center style={{width: '100%', height: '100%', backgroundColor: 'black'}}>
           <Pointer />
           <Text style = {{color:'white'}}> {data} </Text>
           <Compass azimuth={azimuth} onHeadingChange={handleHeadingChange} />
           <Galaxy rotation={heading}/>
-     </Center>
+     </Center> 
+     :
+      <Center style={{width: '100%', height: '100%', backgroundColor: 'black'}}>
+      <Text style={{color:'white'}}>Loading....</Text>
+      </Center> 
       }
        
 
