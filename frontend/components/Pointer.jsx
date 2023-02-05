@@ -12,7 +12,8 @@ const Pointer = ({ targetHeading }) => {
         <Box style={{
           width: 3,
           height: 45,
-          backgroundColor: 'white'
+          backgroundColor: 'white',
+          zIndex: 40
         }}></Box>
     )
 }

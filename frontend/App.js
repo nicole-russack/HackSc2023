@@ -18,11 +18,10 @@ import { Platform } from "react-native"
 import * as Location from "expo-location"
 import { DeviceMotion } from 'expo-sensors'; 
 
-
-
 // components
 import Compass from './components/Compass'
 import Pointer from "./components/Pointer"
+import Galaxy from "./components/Galaxy"
 
 // Define the config
 const config = {
@@ -37,18 +36,54 @@ const App = () => {
 
   const [azimuth, setAzimuth] = useState(0);
   const [altitude, setAltitude] = useState(0);
+  const [heading, setHeading] = useState(0);
+
+  const [location, setLocation] = useState(null);
+  const [errorMsg, setErrorMsg] = useState(null);
+  const [url, setUrl] = useState(null);
+
 
   useEffect(() => {
-    fetch('http://192.168.1.36:3000/?year=2023&month=2&day=3&hour=12&minute=31&planet=mars&lat=34.0522&lng=118.243', {
-      method:'GET'
-    })
-    .then(resp => resp.json())
-    .then(article => {
-      console.log(article)
-      setAzimuth(article.azimuth);
-      setAltitude(article.altitude);
-    })
-  }, [])
+    (async () => {
+      
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== 'granted') {
+        setErrorMsg('Permission to access location was denied');
+        return;
+      }
+
+      let location = await Location.getCurrentPositionAsync({});
+      setLocation(location);
+      console.log("this is the location" , location.coords.latitude);
+      console.log("this is the location" , location.coords.longitude);
+      const tempUrl = 'http://unpaul.pythonanywhere.com/planet?year=2023&month=2&day=4&hour=20&minute=31&planet=moon&lat=' + location.coords.latitude + '&lng=' + location.coords.longitude;
+      setUrl(tempUrl);
+      
+      fetch(tempUrl, {
+        method:'GET'
+      })
+      .then(resp => resp.json())
+      .then(article => {
+        console.log(article)
+        setAzimuth(article.azimuth);
+        setAltitude(article.altitude);
+      })
+
+    })();
+  }, []);
+
+  let text = 'Waiting..';
+  if (errorMsg) {
+    text = errorMsg;
+  } else if (location) {
+    text = JSON.stringify(location);
+  }
+
+
+
+
+  
+
 
   const [data, setData] = useState();
 //Call Once when Screen loads
@@ -82,21 +117,25 @@ const _unsubscribe = () => {
 };
   
 
-    
+  const handleHeadingChange = heading => {
+    setHeading(heading);
+  };
+
   return (
     <NativeBaseProvider>      
-      {/* <Text>{data.rotation.alpha}</Text> 
-      <Text>{data.rotation.beta}</Text>
-      <Text>{data.rotation.gamma}</Text> */}
-      {/* <Text>{data}</Text> */}
       
-      
-      <Center style={{width: '100%', height: '100%', backgroundColor: 'black'}}>
-        {/* <Text style={{color: 'white', fontSize: '30pt', lineHeight: 100 }}>{heading}°</Text> */}
-        <Pointer />
-        <Text style = {{color:'white'}}> {data} </Text>
-        <Compass azimuth={azimuth} />
-      </Center>
+     
+        {/* <Text style={{color: 'white', fontSize: '30pt', lineHeight: 100 }}>{azimuth}°</Text> */}
+
+        {location &&
+          <Center style={{width: '100%', height: '100%', backgroundColor: 'black'}}>
+          <Pointer />
+          <Text style = {{color:'white'}}> {data} </Text>
+          <Compass azimuth={azimuth} onHeadingChange={handleHeadingChange} />
+          <Galaxy rotation={heading}/>
+     </Center>
+      }
+       
     </NativeBaseProvider>
   )
 }
