@@ -304,7 +304,7 @@ const CompassInfo = ({ onActiveObjectChange, onTimeOffsetData }) => {
                         </Slider>
 
                     <Box style={{alignItems: 'flex-end', marginTop: 20}}>
-                        <Button onPress={handleSubmitTime}>Calculate</Button>
+                        <Button onPress={handleSubmitTime}>Locate</Button>
                     </Box>
 
                     </VStack>
