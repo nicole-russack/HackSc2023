@@ -30,7 +30,17 @@ const App = () => {
 
   const [azimuth, setAzimuth] = useState(0);
   const [altitude, setAltitude] = useState(0);
-  const [heading, setHeading] = useState(0)
+  const [heading, setHeading] = useState(0);
+  const [pitch, setPitch] = useState(0);
+  var year = moment().utcOffset('-08:00').format('YYYY')
+  var month = moment().utcOffset('-08:00').format('MM')
+  var day = moment().utcOffset('-08:00').format('DD')
+  var hour = moment().utcOffset('-08:00').format('HH') -8 
+  var minute = moment().utcOffset('-08:00').format('mm')
+  const [location, setLocation] = useState(null);
+  const [errorMsg, setErrorMsg] = useState(null);
+  const [url, setUrl] = useState(null);
+
 
   useEffect(() => {
     (async () => {
@@ -41,7 +51,9 @@ const App = () => {
         return;
       }
 
-      let location = await Location.getCurrentPositionAsync({});
+      let location = await Location.getCurrentPositionAsync({
+        accuracy: Location.Accuracy.Low 
+      });
       setLocation(location);
       console.log("this is the location" , location.coords.latitude);
       console.log("this is the location" , location.coords.longitude);
@@ -120,17 +132,35 @@ const _unsubscribe = () => {
     <NativeBaseProvider>      
       
      
+<<<<<<< HEAD
         {/* <Text style={{color: 'white', fontSize: '30pt', lineHeight: 100 }}>{azimuth}°</Text> */}
 
-        {location &&
+
+        {location ?
           <Center style={{width: '100%', height: '100%', backgroundColor: 'black'}}>
           <CompassInfo setActiveObject={setActiveObjectCB} />
         <Pointer />
           <Text style = {{color:'white'}}> {data} </Text>
           <Compass azimuth={azimuth} onHeadingChange={handleHeadingChange} />
           <Galaxy rotation={heading}/>
-     </Center>
+     </Center> 
+     :
+      <Center style={{width: '100%', height: '100%', backgroundColor: 'black'}}>
+      <Text style={{color:'white'}}>Loading....</Text>
+      </Center> 
+=======
+        <Center>
+        {location &&
+        <Text style={{color: 'white', fontSize: 30, lineHeight: 100, marginBottom: 20}}>{Math.round(pitch)}°</Text>
+        
+        <Pointer color={Math.round(heading) - Math.round(azimuth) === 0 ? '#4ced28' : 'white'}/>
+        <Compass azimuth={azimuth} onHeadingChange={handleHeadingChange} />
+        <Altimeter targetPitch={45} onPitchChange={handlePitchChange}/>
+        
+        <Galaxy rotation={heading}/>
+>>>>>>> main
       }
+      </Center>
        
 
     </NativeBaseProvider>

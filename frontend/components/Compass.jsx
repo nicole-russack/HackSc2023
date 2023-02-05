@@ -70,7 +70,7 @@ const Compass = ({ azimuth, onHeadingChange }) => {
                     borderBottomWidth: 20,
                     borderLeftColor: "transparent",
                     borderRightColor: "transparent",
-                    borderBottomColor: "red",}} />
+                    borderBottomColor: Math.round(heading) - Math.round(azimuth) === 0 ? "#4ced28" : "red",}} />
             </Center>
 
             {/* Compass Circle */}

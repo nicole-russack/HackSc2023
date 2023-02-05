@@ -5,7 +5,7 @@ import AltitudeMarker from './AltitudeMarker';
 // the height prop is from -1 (bottom of screen) to 1 (the top)
 const Altimeter = ({ targetPitch, onPitchChange }) => {
 
-  const [pitch, setPitch] = useState(0)
+  const [pitch, setPitch] = useState(0);
   
   useEffect(() => {
     DeviceMotion.addListener(({ rotation }) => {
@@ -21,8 +21,7 @@ const Altimeter = ({ targetPitch, onPitchChange }) => {
 
   return (
     <>
-      <AltitudeMarker altitude={targetPitch} />
-      <AltitudeMarker altitude={pitch} />
+      <AltitudeMarker altitude={pitch} targetAltitude={targetPitch} />
     </>
   )
 }
