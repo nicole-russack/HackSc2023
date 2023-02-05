@@ -37,8 +37,7 @@ const Compass = ({ azimuth, onHeadingChange }) => {
             
             // listen for changes in the phone's compass heading
             Location.watchHeadingAsync(data => {
-                let { trueHeading } = data;
-                trueHeading = Math.round(trueHeading);
+                const { trueHeading } = data;
                 setHeading(trueHeading);
                 onHeadingChange(trueHeading);
             })

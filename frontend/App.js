@@ -7,11 +7,14 @@ import {
   Box,
 } from "native-base"
 import * as Location from "expo-location"
+import { DeviceMotion } from 'expo-sensors'; 
+import moment from 'moment';
 
 // components
 import Compass from './components/Compass'
 import Pointer from "./components/Pointer"
 import Galaxy from "./components/Galaxy"
+import Altimeter from "./components/Altimeter"
 import CompassInfo from './components/CompassInfo'
 
 // Define the config
@@ -29,38 +32,107 @@ const App = () => {
   const [altitude, setAltitude] = useState(0);
   const [heading, setHeading] = useState(0)
 
-  // keep track of the active object
-  // if no object selected, will be
-  const [activeObject, setActiveObject] = useState(null)
-  const setActiveObjectCB = (object) => {
-    setActiveObject(object)
+  useEffect(() => {
+    (async () => {
+      
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== 'granted') {
+        setErrorMsg('Permission to access location was denied');
+        return;
+      }
+
+      let location = await Location.getCurrentPositionAsync({});
+      setLocation(location);
+      console.log("this is the location" , location.coords.latitude);
+      console.log("this is the location" , location.coords.longitude);
+      console.log("this is the time ", year, " ", month, " ", day);
+      const tempUrl = 'http://unpaul.pythonanywhere.com/planet?year=' + year + '&month=' + month + '&day=' + day + '&hour=' + hour + '&minute=' + minute + '&planet=moon&lat=' + location.coords.latitude + '&lng=' + location.coords.longitude;
+      setUrl(tempUrl);
+      
+      fetch(tempUrl, {
+        method:'GET'
+      })
+      .then(resp => resp.json())
+      .then(article => {
+        console.log(article)
+        setAzimuth(article.azimuth);
+        setAltitude(article.altitude);
+      })
+
+    })();
+  }, []);
+
+  let text = 'Waiting..';
+  if (errorMsg) {
+    text = errorMsg;
+  } else if (location) {
+    text = JSON.stringify(location);
   }
 
-  useEffect(() => {
-    fetch('http://unpaul.pythonanywhere.com/planet?year=2023&month=2&day=4&hour=20&minute=31&planet=moon&lat=34.0522&lng=-118.243', {
-      method:'GET'
-    })
-    .then(resp => resp.json())
-    .then(article => {
-      console.log(article)
-      setAzimuth(article.azimuth);
-      setAltitude(article.altitude);
-    })
-  }, []);
+
+
+
+  
+
+
+  const [data, setData] = useState();
+//Call Once when Screen loads
+useEffect(() => {
+  //Subscribe Function
+  _subscribe();
+  //Call Once when Screen unloads
+  return () => {
+    _unsubscribe(); //Unsubscribe Function
+  };
+}, []);
+
+//SetInterval between listening of 2 DeviceMotion Action
+const _setInterval = () => {
+  DeviceMotion.setUpdateInterval(77);
+};
+
+const _subscribe = () => {
+  //Adding the Listener
+  DeviceMotion.addListener((devicemotionData) => {
+   
+    setData(devicemotionData.rotation.beta * 180/3.14); 
+  });
+  //Calling setInterval Function after adding the listener
+  _setInterval();
+};
+
+const _unsubscribe = () => {
+  //Removing all the listeners at end of screen unload
+  DeviceMotion.removeAllListeners();
+};
+  
 
   const handleHeadingChange = heading => {
     setHeading(heading);
+
   };
+
+  const handlePitchChange = newPitch => {
+    setPitch(newPitch);
+  }
 
   return (
     <NativeBaseProvider>      
-      <Center style={{width: '100%', height: '100%', backgroundColor: 'black'}}>
+      
+     
         {/* <Text style={{color: 'white', fontSize: '30pt', lineHeight: 100 }}>{azimuth}°</Text> */}
-        <CompassInfo setActiveObject={setActiveObjectCB} />
+
+        {location &&
+          <Center style={{width: '100%', height: '100%', backgroundColor: 'black'}}>
+          <CompassInfo setActiveObject={setActiveObjectCB} />
         <Pointer />
-        <Compass azimuth={azimuth} onHeadingChange={handleHeadingChange} />
-        <Galaxy rotation={heading}/>
-      </Center>
+          <Text style = {{color:'white'}}> {data} </Text>
+          <Compass azimuth={azimuth} onHeadingChange={handleHeadingChange} />
+          <Galaxy rotation={heading}/>
+     </Center>
+      }
+       
+
     </NativeBaseProvider>
   )
 }
