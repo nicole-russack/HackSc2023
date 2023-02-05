@@ -26,34 +26,62 @@ const CompassInfo = (props) => {
     // objects
     const [celestialObjects, setCelestialObjects] = useState({
         planets: [
-        {
-            name: 'Mercury',
-        },
-        {
-            name: 'Venus',
-        },
-        {
-            name: 'Earth',
-        },
-        {
-            name: 'Mars',
-        },
+            {
+                name: 'Mercury',
+            },
+            {
+                name: 'Venus',
+            },
+            {
+                name: 'Mars',
+            },
+            {
+                name: 'Saturn',
+            },
+            {
+                name: 'Neptune',
+            },
+            {
+                name: 'Jupiter',
+            },
+            {
+                name: 'Uranus',
+            },
         ],
         moons: [
-
+            {
+                name: "Earth's Moon"
+            }
+        ],
+        stars: [
+            {
+                name: "Barnard's Star",
+            },
+            {
+                name: 'Betelgeuse',
+            },
+            {
+                name: 'Sirius',
+            },
+            {
+                name: 'Polaris',
+            },
         ]
     })
-    const [allCelestialObjects, setAllCelestialObjects] = useState(celestialObjects.planets)
+    var _allCelestialObjects = []
+    const [allCelestialObjects, setAllCelestialObjects] = useState([])
     const [isCelestialObjectsLoaded, setIsCelestialObjectsLoaded] = useState(false)
     useEffect(() => {
 
         const getCelestialObjects = async () => {
-        setCelestialObjects(await celestialObjectsServices.getAllObjects())
+        // setCelestialObjects(await celestialObjectsServices.getAllObjects())
 
         // add to make allCelestialObjects
         var _allCelestialObjects = []
         _allCelestialObjects = _allCelestialObjects.concat(celestialObjects.planets)
-        // setAllCelestialObjects(_allCelestialObjects)
+        _allCelestialObjects = _allCelestialObjects.concat(celestialObjects.moons)
+        _allCelestialObjects = _allCelestialObjects.concat(celestialObjects.stars)
+        setAllCelestialObjects(_allCelestialObjects)
 
         }
         getCelestialObjects()
