@@ -39,6 +39,7 @@ const App = () => {
   const [azimuth, setAzimuth] = useState(0);
   const [altitude, setAltitude] = useState(0);
   const [heading, setHeading] = useState(0);
+
   const [pitch, setPitch] = useState(0);
   var year = moment().utcOffset('-08:00').format('YYYY')
   var month = moment().utcOffset('-08:00').format('MM')
@@ -90,11 +91,6 @@ const App = () => {
   }
 
 
-
-
-  
-
-
   const [data, setData] = useState();
 //Call Once when Screen loads
 useEffect(() => {
@@ -140,7 +136,6 @@ const _unsubscribe = () => {
     <NativeBaseProvider>      
       
      
-<<<<<<< HEAD
         {/* <Text style={{color: 'white', fontSize: '30pt', lineHeight: 100 }}>{azimuth}°</Text> */}
 
 
@@ -155,19 +150,7 @@ const _unsubscribe = () => {
       <Center style={{width: '100%', height: '100%', backgroundColor: 'black'}}>
       <Text style={{color:'white'}}>Loading....</Text>
       </Center> 
-=======
-        <Center>
-        {location &&
-        <Text style={{color: 'white', fontSize: 30, lineHeight: 100, marginBottom: 20}}>{Math.round(pitch)}°</Text>
-        
-        <Pointer color={Math.round(heading) - Math.round(azimuth) === 0 ? '#4ced28' : 'white'}/>
-        <Compass azimuth={azimuth} onHeadingChange={handleHeadingChange} />
-        <Altimeter targetPitch={45} onPitchChange={handlePitchChange}/>
-        
-        <Galaxy rotation={heading}/>
->>>>>>> main
       }
-      </Center>
        
 
     </NativeBaseProvider>
