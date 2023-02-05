@@ -48,7 +48,7 @@ const Compass = ({ azimuth, onHeadingChange }) => {
     const backgroundSize = 2400;
 
     return (
-        <Box style={{transform: [{translateY: 12.3}, {rotate: `${-heading + azimuth}deg`}, {translateY: -12.3}]}} pointerEvents='none'>
+        <Box style={{transform: [{translateY: 13}, {rotate: `${-heading + azimuth}deg`}, {translateY: -13}]}} pointerEvents='none'>
             <ImageBackground 
                 source={require('../assets/stars5.png')} 
                 style={{
