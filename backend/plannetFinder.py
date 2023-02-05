@@ -57,7 +57,7 @@ def getStarDirection(year, month, day, hour, minute, star, lat, lng):
   v = e.observe(p)
   alt, az, distance = v.apparent().altaz()
   return [alt.degrees, az.degrees, distance.au]
-print(getStarDirection(2023, 2, 5, 3, 30, 'betelgeuse', -42.3583, 71.0603))
+#print(getStarDirection(2023, 2, 5, 3, 30, 'betelgeuse', -42.3583, 71.0603))
 
 
 app = Flask(__name__)
@@ -75,8 +75,8 @@ def get_articles():
   lng = request.args.get('lng')
 
 
-  data = getStarDirection(int(year), int(month), int(day), int(hour), int(minute), planet, float(lat), float(lng))
-  print(data)
+  data = getDirection(int(year), int(month), int(day), int(hour), int(minute), planet, float(lat), float(lng))
+  #print(data)
   return jsonify({"altitude":data[0],
                   "azimuth":data[1],
                   "distance":data[2]})
@@ -93,11 +93,11 @@ def get_stars():
   lat = request.args.get('lat')
   lng = request.args.get('lng')
 
-  print(request.args)
+  #print(request.args)
 
 
   data = getStarDirection(int(year), int(month), int(day), int(hour), int(minute), stars, float(lat), float(lng))
-  print(data)
+  #print(data)
   return jsonify({"altitude":data[0],
                   "azimuth":data[1],
                   "distance":data[2]})
@@ -112,7 +112,7 @@ def getMoon():
   minute = request.args.get('minute')
 
   data = getMoonPhase(int(year), int(month), int(day), int(hour), int(minute))
-  print(data)
+  #print(data)
   return jsonify({"phase":data[0],
                   "percent":data[1]})
 
