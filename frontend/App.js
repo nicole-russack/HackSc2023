@@ -89,43 +89,7 @@ const App = () => {
     text = JSON.stringify(location);
   }
 
-
-
-
-  
-
-
   const [data, setData] = useState();
-//Call Once when Screen loads
-useEffect(() => {
-  //Subscribe Function
-  _subscribe();
-  //Call Once when Screen unloads
-  return () => {
-    _unsubscribe(); //Unsubscribe Function
-  };
-}, []);
-
-//SetInterval between listening of 2 DeviceMotion Action
-const _setInterval = () => {
-  DeviceMotion.setUpdateInterval(77);
-};
-
-const _subscribe = () => {
-  //Adding the Listener
-  DeviceMotion.addListener((devicemotionData) => {
-   
-    setData(devicemotionData.rotation.beta * 180/3.14); 
-  });
-  //Calling setInterval Function after adding the listener
-  _setInterval();
-};
-
-const _unsubscribe = () => {
-  //Removing all the listeners at end of screen unload
-  DeviceMotion.removeAllListeners();
-};
-  
 
   const handleHeadingChange = heading => {
     setHeading(heading);
@@ -138,37 +102,20 @@ const _unsubscribe = () => {
 
   return (
     <NativeBaseProvider>      
-      
-     
-<<<<<<< HEAD
-        {/* <Text style={{color: 'white', fontSize: '30pt', lineHeight: 100 }}>{azimuth}°</Text> */}
-
 
         {location ?
           <Center style={{width: '100%', height: '100%', backgroundColor: 'black'}}>
-          <Pointer />
-          <Text style = {{color:'white'}}> {data} </Text>
-          <Compass azimuth={azimuth} onHeadingChange={handleHeadingChange} />
-          <Galaxy rotation={heading}/>
-     </Center> 
-     :
-      <Center style={{width: '100%', height: '100%', backgroundColor: 'black'}}>
-      <Text style={{color:'white'}}>Loading....</Text>
-      </Center> 
-=======
-        <Center>
-        {location &&
-        <Text style={{color: 'white', fontSize: 30, lineHeight: 100, marginBottom: 20}}>{Math.round(pitch)}°</Text>
-        
-        <Pointer color={Math.round(heading) - Math.round(azimuth) === 0 ? '#4ced28' : 'white'}/>
-        <Compass azimuth={azimuth} onHeadingChange={handleHeadingChange} />
-        <Altimeter targetPitch={45} onPitchChange={handlePitchChange}/>
-        
-        <Galaxy rotation={heading}/>
->>>>>>> main
-      }
-      </Center>
-       
+            <Pointer />
+            <Text style = {{color:'white'}}> {data} </Text>
+            <Compass azimuth={azimuth} onHeadingChange={handleHeadingChange} />
+            <Altimeter targetPitch={altitude} onPitchChange={handlePitchChange} />
+            <Galaxy rotation={heading}/>
+          </Center> 
+          :
+          <Center style={{width: '100%', height: '100%', backgroundColor: 'black'}}>
+            <Text style={{color:'white'}}>Loading....</Text>
+          </Center> 
+      }       
 
     </NativeBaseProvider>
   )
