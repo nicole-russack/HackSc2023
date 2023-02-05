@@ -117,7 +117,6 @@ const CompassInfo = (props) => {
         }
     }
     const handleChangeObjectInput = (newObjectInput) => {
-        // deactivate object, if active
         if (activeObject) {
             setActiveObject(null)
             props.setActiveObject(null)
@@ -209,6 +208,17 @@ const CompassInfo = (props) => {
         })
     }
 
+    const memoizedObjectsFiltered = React.useMemo(() => {
+        return objectsFiltered.map((object, index) =>
+            <Box key={index} style={{overflow: 'hidden'}}>
+                <Pressable onPress={() => activateObject(index)} style={{height: 40, display: 'flex', justifyContent: 'center'}}>
+                <Text style={{color: 'white'}}>{object.name}</Text>
+                </Pressable>
+                <Divider style={{backgroundColor: 'gray'}} />
+            </Box>
+        )
+    }, [objectInput])
+
     return (
         <Center>
           <Container style={{overflow: 'hidden'}}>
@@ -221,14 +231,7 @@ const CompassInfo = (props) => {
             {/* Suggestions Box - only viewable while user typing */}
             <Animated.View style={{display: 'flex', borderWidth: 5, height: suggestionsBoxHeight, width: 400, padding: 10, overflow: 'hidden'}}>
               <ScrollView style={{overflow: 'hidden'}} keyboardShouldPersistTaps='handled'>
-                {objectsFiltered.map((object, index) =>
-                <Box key={index} style={{overflow: 'hidden'}}>
-                  <Pressable onPress={() => activateObject(index)} style={{height: 40, display: 'flex', justifyContent: 'center'}}>
-                    <Text style={{color: 'white'}}>{object.name}</Text>
-                  </Pressable>
-                  <Divider style={{backgroundColor: 'gray'}} />
-                </Box>
-                )}
+                {memoizedObjectsFiltered}
               </ScrollView>
             </Animated.View>
 

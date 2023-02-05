@@ -17,7 +17,8 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.andrmholt.frontend"
     },
     "android": {
       "adaptiveIcon": {
@@ -27,6 +28,11 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "1274dd3b-01c2-4a8f-add9-abbf6f6634db"
+      }
     }
   }
 }
