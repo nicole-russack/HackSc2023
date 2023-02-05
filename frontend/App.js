@@ -96,6 +96,17 @@ const App = () => {
     setActiveObject(object)
   }
 
+  // keep track of time data
+  const [timeOffsetData, setTimeOffsetData] = useState({
+    hours: 0,
+    days: 0,
+    months: 0,
+    years: 0
+  })
+  const setTimeOffsetDataCB = (data) => {
+    setTimeOffsetData(data)
+  }
+
   return (
     <NativeBaseProvider>      
 
