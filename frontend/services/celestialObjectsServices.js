@@ -68,3 +68,10 @@ const getObjectAtTime = async (coordinates, timeOffset) => {
         return e
     }
 }
+
+const celestialObjectsServices = {
+    getAllObjects,
+    getObjectAtTime,
+}
+
+export default celestialObjectsServices

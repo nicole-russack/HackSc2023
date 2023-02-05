@@ -1,20 +1,11 @@
 import React, {useState, useEffect} from "react"
 import {
   Text,
-  Link,
-  HStack,
   Center,
-  Heading,
-  Switch,
-  useColorMode,
   NativeBaseProvider,
   extendTheme,
-  VStack,
-  View,
   Box,
 } from "native-base"
-import NativeBaseIcon from "./components/NativeBaseIcon"
-import { Platform } from "react-native"
 import * as Location from "expo-location"
 import { DeviceMotion } from 'expo-sensors'; 
 import moment from 'moment';
@@ -24,6 +15,7 @@ import Compass from './components/Compass'
 import Pointer from "./components/Pointer"
 import Galaxy from "./components/Galaxy"
 import Altimeter from "./components/Altimeter"
+import CompassInfo from './components/CompassInfo'
 
 // Define the config
 const config = {
@@ -128,6 +120,12 @@ const _unsubscribe = () => {
     setPitch(newPitch);
   }
 
+  // keep track of active ojbect
+  const [activeObject, setActiveObject] = useState(null)
+  const setActiveObjectCB = (object) => {
+    setActiveObject(object)
+  }
+
   return (
     <NativeBaseProvider>      
       
@@ -137,7 +135,8 @@ const _unsubscribe = () => {
 
         {location ?
           <Center style={{width: '100%', height: '100%', backgroundColor: 'black'}}>
-          <Pointer />
+          <CompassInfo setActiveObject={setActiveObjectCB} />
+        <Pointer />
           <Text style = {{color:'white'}}> {data} </Text>
           <Compass azimuth={azimuth} onHeadingChange={handleHeadingChange} />
           <Galaxy rotation={heading}/>
