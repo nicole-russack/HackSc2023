@@ -50,7 +50,7 @@ const App = () => {
 
   useEffect(() => {
     (async () => {      
-      setActiveObject({'name':'Sirius'});
+      setActiveObject({'name':'moon'});
       let { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== 'granted') {
         setErrorMsg('Permission to access location was denied');
@@ -62,6 +62,30 @@ const App = () => {
       });
       setLocation(location);
 
+      if(activeObject.name == 'Betelgeuse' || activeObject.name == 'Sirius' || activeObject.name == 'Polaris' ||activeObject.name == 'Barnard\'s Star'){
+        const tempUrl = 'http://unpaul.pythonanywhere.com/stars?year=' + year + '&month=' + month + '&day=' + day + '&hour=' + hour + '&minute=' + minute + '&stars=' + activeObject.name + ' &lat=' + location.coords.latitude + '&lng=' + location.coords.longitude;
+        setUrl(tempUrl);
+      }
+      else{
+        const tempUrl = 'http://unpaul.pythonanywhere.com/planet?year=' + year + '&month=' + month + '&day=' + day + '&hour=' + hour + '&minute=' + minute + '&planet=' + activeObject.name + ' &lat=' + location.coords.latitude + '&lng=' + location.coords.longitude;
+        setUrl(tempUrl);
+      }
+
+      fetch(tempUrl, {
+        method:'GET'
+      })
+      .then(resp => resp.json())
+      .then(article => {
+        setAzimuth(article.azimuth);
+        setAltitude(article.altitude);
+      })
+
+    })();
+  }, []);
+
+
+  useEffect(() => {
+    (async () => {      
       if(activeObject.name == 'Betelgeuse' || activeObject.name == 'Sirius' || activeObject.name == 'Polaris' ||activeObject.name == 'Barnard\'s Star'){
         const tempUrl = 'http://unpaul.pythonanywhere.com/stars?year=' + year + '&month=' + month + '&day=' + day + '&hour=' + hour + '&minute=' + minute + '&stars=' + activeObject.name + ' &lat=' + location.coords.latitude + '&lng=' + location.coords.longitude;
         setUrl(tempUrl);
