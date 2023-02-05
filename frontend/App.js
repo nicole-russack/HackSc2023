@@ -128,7 +128,7 @@ const App = () => {
               
               if(activeObject.name == 'Barnards' || activeObject.name == 'Betelgeuse' || activeObject.name == 'Sirius' || activeObject.name == 'Polaris'){
                 
-                  const tempUrl = 'http://unpaul.pythonanywhere.com/stars?year=' + yeartemp + '&month=' + monthtemp + '&day=' + daytemp + '&hour=' + hourtemp + '&minute=' + minute + '&stars=' + activeObject.name + '&lat=' + location.coords.latitude + '&lng=' + location.coords.longitude;
+                  const tempUrl = 'http://unpaul.pythonanywhere.com/stars?year=' + yeartemp + '&month=' + monthtemp + '&day=' + daytemp + '&hour=' + hourtemp + '&minute=' + minute + '&stars=' + activeObject.name.toString().toLowerCase() + '&lat=' + location.coords.latitude + '&lng=' + location.coords.longitude;
                   console.log(tempUrl);
                   setUrl(tempUrl);
                   
@@ -144,7 +144,7 @@ const App = () => {
                   })
               }
               else{
-                const tempUrl = 'http://unpaul.pythonanywhere.com/planet?year=' + yeartemp + '&month=' + monthtemp + '&day=' + daytemp + '&hour=' + hourtemp + '&minute=' + minute + '&planet=' + activeObject.name + '&lat=' + location.coords.latitude + '&lng=' + location.coords.longitude;
+                const tempUrl = 'http://unpaul.pythonanywhere.com/planet?year=' + yeartemp + '&month=' + monthtemp + '&day=' + daytemp + '&hour=' + hourtemp + '&minute=' + minute + '&planet=' + activeObject.name.toString().toLowerCase() + '&lat=' + location.coords.latitude + '&lng=' + location.coords.longitude;
                 console.log(tempUrl);
                 setUrl(tempUrl);
                 
