@@ -5,6 +5,7 @@ import {
     Circle,
     NativeBaseProvider,
     Text,
+    View
 } from 'native-base'
 import { Dimensions } from 'react-native'
 
@@ -22,11 +23,11 @@ const AltitudeMarker = ({ altitude, targetAltitude }) => {
     width: size,
     height: size,
     borderRadius: 325,
-    transform: [{translateY: 55}]
+    transform: [{translateY: 145}]
   }
 
   return (
-    <Box style={styles}></Box>
+    <View style={styles}></View>
   )
 }
 

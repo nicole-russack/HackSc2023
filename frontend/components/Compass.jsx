@@ -48,7 +48,7 @@ const Compass = ({ azimuth, onHeadingChange }) => {
     const backgroundSize = 2400;
 
     return (
-        <Box style={{transform: [{rotate: `${-heading + azimuth}deg`}, {translateY: -12}]}} pointerEvents='none'>
+        <Box style={{transform: [{rotate: `${-heading + azimuth}deg`}, {translateY: 0}]}} pointerEvents='none'>
             <ImageBackground 
                 source={require('../assets/stars5.png')} 
                 style={{
@@ -62,6 +62,8 @@ const Compass = ({ azimuth, onHeadingChange }) => {
             {/* Compass Traingle Pointer */}
             <Center style={{marginBottom: 5}}>
                 <Box style={{width: 0,
+                    // position: 'absolute',
+                    // transform: [{translateY: -157}],
                     height: 0,
                     backgroundColor: "transparent",
                     borderStyle: "solid",
@@ -74,7 +76,15 @@ const Compass = ({ azimuth, onHeadingChange }) => {
             </Center>
 
             {/* Compass Circle */}
-            <Box style={{borderColor: 'gray', borderWidth: 5, borderStyle: 'dotted', borderRadius: 200, width: 325, height: 325}}>
+            <Box style={{
+                // position: 'absolute',
+                // transform: [{translateY: -140}, {translateX: -160}],
+                borderColor: 'gray', 
+                borderWidth: 5, 
+                borderStyle: 'dotted', 
+                borderRadius: 200, 
+                width: 325, 
+                height: 325}}>
             </Box>        
         </Box>
     )

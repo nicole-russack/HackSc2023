@@ -5,6 +5,7 @@ import {
   NativeBaseProvider,
   extendTheme,
   Box,
+  View,
 } from "native-base"
 import * as Location from "expo-location"
 import { DeviceMotion } from 'expo-sensors'; 
@@ -135,8 +136,10 @@ const App = () => {
         {location ?
           <Center style={{width: '100%', height: '100%', backgroundColor: 'black'}}>
             <CompassInfo onActiveObjectChange={setActiveObjectCB} onTimeOffsetData={setTimeOffsetDataCB} />
-            <CompassContainer azimuth={azimuth}/>
-            <Altimeter targetPitch={altitude} />
+            <View>
+              <CompassContainer azimuth={azimuth}/>
+              <Altimeter targetPitch={altitude} />
+            </View>
           </Center> 
           :
           <Center style={{width: '100%', height: '100%', backgroundColor: 'black'}}>
