@@ -29,7 +29,7 @@ export const theme = extendTheme({ config })
 const App = () => {
 
   const [azimuth, setAzimuth] = useState(0);
-  const [altitude, setAltitude] = useState(0);
+  const [altitude, setAltitude] = useState(1);
   const [heading, setHeading] = useState(0);
 
   const [pitch, setPitch] = useState(0);
@@ -55,6 +55,7 @@ const App = () => {
       let location = await Location.getCurrentPositionAsync({
         accuracy: Location.Accuracy.Low 
       });
+
       setLocation(location);
       const tempUrl = 'http://unpaul.pythonanywhere.com/planet?year=' + year + '&month=' + month + '&day=' + day + '&hour=' + hour + '&minute=' + minute + '&planet=moon&lat=' + location.coords.latitude + '&lng=' + location.coords.longitude;
       setUrl(tempUrl);
@@ -65,6 +66,7 @@ const App = () => {
       .then(resp => resp.json())
       .then(article => {
         setAzimuth(article.azimuth);
+        console.log(article.altitude);
         setAltitude(article.altitude);
       })
 
@@ -82,7 +84,6 @@ const App = () => {
 
   const handleHeadingChange = heading => {
     setHeading(heading);
-
   };
 
   const handlePitchChange = newPitch => {
