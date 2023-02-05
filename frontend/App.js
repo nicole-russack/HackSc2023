@@ -38,6 +38,7 @@ const App = () => {
   const [azimuth, setAzimuth] = useState(0);
   const [altitude, setAltitude] = useState(0);
   const [heading, setHeading] = useState(0);
+  const [pitch, setPitch] = useState(0);
   var year = moment().utcOffset('-08:00').format('YYYY')
   var month = moment().utcOffset('-08:00').format('MM')
   var day = moment().utcOffset('-08:00').format('DD') - 8
