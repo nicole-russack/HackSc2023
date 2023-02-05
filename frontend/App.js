@@ -126,16 +126,23 @@ const _unsubscribe = () => {
     setActiveObject(object)
   }
 
+  // keep track of time data
+  const [timeOffsetData, setTimeOffsetData] = useState({
+    hours: 0,
+    days: 0,
+    months: 0,
+    years: 0
+  })
+  const setTimeOffsetDataCB = (data) => {
+    setTimeOffsetData(data)
+  }
+
   return (
     <NativeBaseProvider>      
-      
-     
-        {/* <Text style={{color: 'white', fontSize: '30pt', lineHeight: 100 }}>{azimuth}°</Text> */}
-
 
         {location ?
           <Center style={{width: '100%', height: '100%', backgroundColor: 'black'}}>
-          <CompassInfo setActiveObject={setActiveObjectCB} />
+          <CompassInfo setActiveObject={setActiveObjectCB} setTimeOffsetData={setTimeOffsetDataCB} />
         <Pointer />
           <Text style = {{color:'white'}}> {data} </Text>
           <Compass azimuth={azimuth} onHeadingChange={handleHeadingChange} />

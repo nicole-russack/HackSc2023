@@ -172,8 +172,13 @@ const CompassInfo = (props) => {
         // close time menu
         setIsTimeMenuOpen(false)
 
-        // submit and fetch new data
-        console.log(hoursOffset, daysOffset, monthsOffset, yearsOffset)
+        // submit data
+        props.setTimeOffsetData({
+            hours: hoursOffset,
+            datys: daysOffset,
+            months: monthsOffset,
+            years: yearsOffset
+        })
     }
 
     return (
