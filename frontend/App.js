@@ -1,4 +1,4 @@
-import React from "react"
+import React, {useState, useEffect} from "react"
 import {
   Text,
   Link,
@@ -29,47 +29,26 @@ const config = {
 export const theme = extendTheme({ config })
 
 const App = () => {
+  const [data, setData] = useState([])
+
+  useEffect(() => {
+    fetch('http://192.168.1.30:3000/?year=2023&month=2&day=3&hour=12&minute=31&planet=mars&lat=34.0522&lng=118.243', {
+      method:'GET'
+    })
+    .then(resp => resp.json())
+    .then(article => {
+      setData(article)
+    })
+  
+  }, [])
+  
   return (
     <NativeBaseProvider>
-      {/* <Center
-        _dark={{ bg: "blueGray.900" }}
-        _light={{ bg: "blueGray.50" }}
-        px={4}
-        flex={1}
-      >
-        <VStack space={5} alignItems="center">
-          <NativeBaseIcon />
-          <Heading size="lg">Welcome to NativeBase</Heading>
-          <HStack space={2} alignItems="center">
-            <Text>Edit</Text>
-            <Box
-              _web={{
-                _text: {
-                  fontFamily: "monospace",
-                  fontSize: "sm",
-                },
-              }}
-              px={2}
-              py={1}
-              _dark={{ bg: "blueGray.800" }}
-              _light={{ bg: "blueGray.200" }}
-            >
-              App.js
-            </Box>
-            <Text>and save to reload.</Text>
-          </HStack>
-          <Link href="https://docs.nativebase.io" isExternal>
-            <Text color="primary.500" underline fontSize={"xl"}>
-              Learn NativeBase
-            </Text>
-          </Link>
-        </VStack>
-      </Center> */}
-
-      <Center style={{width: '100%', height: '100%', backgroundColor: 'black'}}>
-        <Compass />
+      <Center style={{width: '50%', height: '50%', backgroundColor: 'white'}}>
+        <Text>{data["alt degrees"]}</Text>
+        <Text>{data["alt degrees"]}</Text>
+        <Text>{data["distance"]}</Text>
       </Center>
-
     </NativeBaseProvider>
   )
 }
