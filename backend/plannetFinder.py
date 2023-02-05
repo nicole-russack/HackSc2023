@@ -79,8 +79,8 @@ def get_articles():
 
   data = getDirection(int(year), int(month), int(day), int(hour), int(minute), planet, float(lat), float(lng))
   print(data)
-  return jsonify({"alt degrees":data[0],
-                  "az degrees":data[1],
+  return jsonify({"altitude":data[0],
+                  "azimuth":data[1],
                   "distance":data[2]})
 
 if __name__ == "__main__":
