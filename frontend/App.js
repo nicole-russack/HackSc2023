@@ -64,9 +64,6 @@ const App = () => {
         accuracy: Location.Accuracy.Low 
       });
       setLocation(location);
-      console.log("this is the location" , location.coords.latitude);
-      console.log("this is the location" , location.coords.longitude);
-      console.log("this is the time ", year, " ", month, " ", day);
       const tempUrl = 'http://unpaul.pythonanywhere.com/planet?year=' + year + '&month=' + month + '&day=' + day + '&hour=' + hour + '&minute=' + minute + '&planet=moon&lat=' + location.coords.latitude + '&lng=' + location.coords.longitude;
       setUrl(tempUrl);
       
@@ -75,7 +72,6 @@ const App = () => {
       })
       .then(resp => resp.json())
       .then(article => {
-        console.log(article)
         setAzimuth(article.azimuth);
         setAltitude(article.altitude);
       })
