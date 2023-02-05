@@ -38,7 +38,7 @@ const App = () => {
   const [heading, setHeading] = useState(0)
 
   useEffect(() => {
-    fetch('http://unpaul.pythonanywhere.com/?year=2023&month=2&day=4&hour=20&minute=31&planet=moon&lat=34.0522&lng=-118.243', {
+    fetch('http://unpaul.pythonanywhere.com/planet?year=2023&month=2&day=4&hour=20&minute=31&planet=moon&lat=34.0522&lng=-118.243', {
       method:'GET'
     })
     .then(resp => resp.json())
