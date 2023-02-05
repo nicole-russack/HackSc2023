@@ -42,10 +42,15 @@ const App = () => {
   const [errorMsg, setErrorMsg] = useState(null);
   const [url, setUrl] = useState(null);
 
+   // keep track of active ojbect
+   const [activeObject, setActiveObject] = useState(null)
+   const setActiveObjectCB = (object) => {
+     setActiveObject(object)
+   }
 
   useEffect(() => {
-    (async () => {
-      
+    (async () => {      
+      setActiveObject({'name':'Sirius'});
       let { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== 'granted') {
         setErrorMsg('Permission to access location was denied');
@@ -56,9 +61,16 @@ const App = () => {
         accuracy: Location.Accuracy.Low 
       });
       setLocation(location);
-      const tempUrl = 'http://unpaul.pythonanywhere.com/planet?year=' + year + '&month=' + month + '&day=' + day + '&hour=' + hour + '&minute=' + minute + '&planet=moon&lat=' + location.coords.latitude + '&lng=' + location.coords.longitude;
-      setUrl(tempUrl);
-      
+
+      if(activeObject.name == 'Betelgeuse' || activeObject.name == 'Sirius' || activeObject.name == 'Polaris' ||activeObject.name == 'Barnard\'s Star'){
+        const tempUrl = 'http://unpaul.pythonanywhere.com/stars?year=' + year + '&month=' + month + '&day=' + day + '&hour=' + hour + '&minute=' + minute + '&stars=' + activeObject.name + ' &lat=' + location.coords.latitude + '&lng=' + location.coords.longitude;
+        setUrl(tempUrl);
+      }
+      else{
+        const tempUrl = 'http://unpaul.pythonanywhere.com/planet?year=' + year + '&month=' + month + '&day=' + day + '&hour=' + hour + '&minute=' + minute + '&planet=' + activeObject.name + ' &lat=' + location.coords.latitude + '&lng=' + location.coords.longitude;
+        setUrl(tempUrl);
+      }
+
       fetch(tempUrl, {
         method:'GET'
       })
@@ -69,7 +81,7 @@ const App = () => {
       })
 
     })();
-  }, []);
+  }, [activeObject]);
 
   let text = 'Waiting..';
   if (errorMsg) {
@@ -120,11 +132,7 @@ const _unsubscribe = () => {
     setPitch(newPitch);
   }
 
-  // keep track of active ojbect
-  const [activeObject, setActiveObject] = useState(null)
-  const setActiveObjectCB = (object) => {
-    setActiveObject(object)
-  }
+ 
 
   return (
     <NativeBaseProvider>      
