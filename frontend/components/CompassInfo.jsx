@@ -50,12 +50,12 @@ const CompassInfo = ({ onActiveObjectChange, onTimeOffsetData }) => {
         ],
         moons: [
             {
-                name: "Earth's Moon"
+                name: "Moon"
             }
         ],
         stars: [
             {
-                name: "Barnard's Star",
+                name: "Barnards",
             },
             {
                 name: 'Betelgeuse',
@@ -118,6 +118,7 @@ const CompassInfo = ({ onActiveObjectChange, onTimeOffsetData }) => {
     }
     const handleChangeObjectInput = (newObjectInput) => {
         if (activeObject) {
+            console.log("now it is acutally an object ", activeObject);
             onActiveObjectChange(null)
             onActiveObjectChange(null)
         }
@@ -172,7 +173,7 @@ const CompassInfo = ({ onActiveObjectChange, onTimeOffsetData }) => {
     const [activeObject, setActiveObject] = useState(null)
     const activateObject = (filteredObjectIndex) => {
 
-        console.log('activate ' + filteredObjectIndex)
+        console.log('activate ' + objectsFiltered[filteredObjectIndex].name)
 
         // set active object
         onActiveObjectChange(objectsFiltered[filteredObjectIndex])
