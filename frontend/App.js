@@ -84,6 +84,16 @@ const App = () => {
     },
   })
 
+  const [data, setData] = useState();
+
+  // keep track of active ojbect
+  const [activeObject, setActiveObject] = useState(null)
+  
+  // passed into CompassInfo
+  const setActiveObjectCB = (object) => {
+    setActiveObject(object)
+  }
+
   useEffect(() => {
     (async () => {
       let yeartemp = parseInt(year) + parseInt(timeOffsetData.years);
