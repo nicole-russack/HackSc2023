@@ -251,7 +251,7 @@ const CompassInfo = ({ onActiveObjectChange, onTimeOffsetData }) => {
             
             {/* Suggestions Box - only viewable while user typing */}
             {!isTimeMenuOpen ?
-                <Animated.View style={{display: 'flex', borderWidth: 5, height: suggestionsBoxHeight, width: 400, padding: 10, overflow: 'hidden'}}>
+                <Animated.View style={{display: 'flex', borderWidth: 5, height: suggestionsBoxHeight, marginBottom: -20, width: 400, padding: 10, overflow: 'hidden'}}>
                     <ScrollView style={{overflow: 'hidden'}} keyboardShouldPersistTaps='handled'>
                     {memoizedObjectsFiltered}
                     </ScrollView>
@@ -262,9 +262,9 @@ const CompassInfo = ({ onActiveObjectChange, onTimeOffsetData }) => {
             {activeObject ? 
               <Box style={{width: 400}}>
                 {!suggestionsBoxIsOpen ?
-                    <Box style={{display: 'flex', width: 400, alignItems: 'flex-start'}}>
+                    <Animated.View style={{display: 'flex', width: 400, alignItems: 'flex-start'}}>
                         <IconButton icon={<Icon as={Ionicons} name="time" size='md' color='white' />} onPress={() => isTimeMenuOpen ? closeTimeMenu() : openTimeMenu()} />
-                    </Box> : null
+                    </Animated.View> : null
                 }
 
                 {/* Time Menu */}
