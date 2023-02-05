@@ -57,13 +57,14 @@ def getStarDirection(year, month, day, hour, minute, star, lat, lng):
   v = e.observe(p)
   alt, az, distance = v.apparent().altaz()
   return [alt.degrees, az.degrees, distance.au]
-#print(getStarDirection(2023, 2, 5, 3, 30, 'betelgeuse', -42.3583, 71.0603))
+print(getStarDirection(2023, 2, 5, 3, 30, 'betelgeuse', -42.3583, 71.0603))
 #print(getMoonPhase(2023, 2, 5, 3, 30))
 
 
 app = Flask(__name__)
 
-@app.route('/', methods = ["GET"])
+#http://192.168.1.36:3000/?year=2023&month=2&day=3&hour=12&minute=31&planet=mars&lat=34.0522&lng=118.243
+@app.route('/planet', methods = ["GET"])
 def get_articles():
   year = request.args.get('year')
   month = request.args.get('month')
@@ -74,14 +75,48 @@ def get_articles():
   lat = request.args.get('lat')
   lng = request.args.get('lng')
 
-  print(request.args)
 
 
-  data = getDirection(int(year), int(month), int(day), int(hour), int(minute), planet, float(lat), float(lng))
+  data = getStarDirection(int(year), int(month), int(day), int(hour), int(minute), planet, float(lat), float(lng))
   print(data)
   return jsonify({"altitude":data[0],
                   "azimuth":data[1],
                   "distance":data[2]})
+
+#http://192.168.1.36:3000/stars?year=2023&month=2&day=3&hour=12&minute=31&stars=polaris&lat=34.0522&lng=118.243
+@app.route('/stars', methods = ["GET"])
+def get_stars():
+  year = request.args.get('year')
+  month = request.args.get('month')
+  day = request.args.get('day')
+  hour = request.args.get('hour')
+  minute = request.args.get('minute')
+  stars = request.args.get('star')
+  lat = request.args.get('lat')
+  lng = request.args.get('lng')
+
+  print(request.args)
+
+
+  data = getStarDirection(int(year), int(month), int(day), int(hour), int(minute), stars, float(lat), float(lng))
+  print(data)
+  return jsonify({"altitude":data[0],
+                  "azimuth":data[1],
+                  "distance":data[2]})
+
+#http://127.0.0.1:5000/moonPhase?year=2023&month=2&day=3&hour=12&minute=31
+@app.route('/moonPhase', methods = ["GET"])
+def getMoon():
+  year = request.args.get('year')
+  month = request.args.get('month')
+  day = request.args.get('day')
+  hour = request.args.get('hour')
+  minute = request.args.get('minute')
+
+  data = getMoonPhase(int(year), int(month), int(day), int(hour), int(minute))
+  print(data)
+  return jsonify({"phase":data[0],
+                  "percent":data[1]})
 
 if __name__ == "__main__":
   app.run(host = '192.168.1.30', port = 3000, debug=True)
