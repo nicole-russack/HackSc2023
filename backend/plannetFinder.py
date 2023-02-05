@@ -1,4 +1,4 @@
-from skyfield.api import load, wgs84, N,S,E,W,Star
+from skyfield.api import load, wgs84, Star, load_file
 from flask import Flask, jsonify, request
 from skyfield.framelib import ecliptic_frame
 from skyfield.data import hipparcos
@@ -6,7 +6,7 @@ from skyfield.data import hipparcos
 def getDirection(year, month, day, hour, minute, planet, lat, lng):
   ts = load.timescale()
   t = ts.utc(year, month, day, hour+8, minute, 0)
-  eph = load('de421.bsp')
+  eph = load_file('/home/unpaul/mysite/de421.bsp')
   if planet == 'jupiter' or planet == 'neptune' or planet == 'saturn' or planet == 'uranus':
     planet += ' barycenter'
   earth, p = eph['earth'], eph[planet]
@@ -20,7 +20,7 @@ def getMoonPhase(year, month, day, hour, minute):
   ts = load.timescale()
   t = ts.utc(year, month, day, hour+8, minute)
 
-  eph = load('de421.bsp')
+  eph = load_file('/home/unpaul/mysite/de421.bsp')
   sun, moon, earth = eph['sun'], eph['moon'], eph['earth']
 
   e = earth.at(t)
@@ -36,7 +36,7 @@ def getMoonPhase(year, month, day, hour, minute):
   return [phase, percent]
 
 def getStarDirection(year, month, day, hour, minute, star, lat, lng):
-  with load.open(hipparcos.URL) as f:
+  with load.open('/home/unpaul/mysite/hip_main.dat') as f:
     df = hipparcos.load_dataframe(f)
   if star == 'barnards':
     star = Star.from_dataframe(df.loc[87937])
@@ -50,7 +50,7 @@ def getStarDirection(year, month, day, hour, minute, star, lat, lng):
     star = Star.from_dataframe(df.loc[87937])
   ts = load.timescale()
   t = ts.utc(year, month, day, hour+8, minute, 0)
-  eph = load('de421.bsp')
+  eph = load_file('/home/unpaul/mysite/de421.bsp')
   earth, p = eph['earth'], star
   earth = earth + wgs84.latlon(lat, lng)
   e = earth.at(t)
@@ -58,7 +58,6 @@ def getStarDirection(year, month, day, hour, minute, star, lat, lng):
   alt, az, distance = v.apparent().altaz()
   return [alt.degrees, az.degrees, distance.au]
 print(getStarDirection(2023, 2, 5, 3, 30, 'betelgeuse', -42.3583, 71.0603))
-#print(getMoonPhase(2023, 2, 5, 3, 30))
 
 
 app = Flask(__name__)
@@ -118,4 +117,4 @@ def getMoon():
                   "percent":data[1]})
 
 if __name__ == "__main__":
-  app.run(host = '192.168.1.30', port = 3000, debug=True)
+  app.run(debug=True)
