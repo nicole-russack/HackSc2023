@@ -50,12 +50,12 @@ const CompassInfo = ({ onActiveObjectChange, onTimeOffsetData }) => {
         ],
         moons: [
             {
-                name: "Earth's Moon"
+                name: "Moon"
             }
         ],
         stars: [
             {
-                name: "Barnard's Star",
+                name: "Barnards",
             },
             {
                 name: 'Betelgeuse',
@@ -118,6 +118,7 @@ const CompassInfo = ({ onActiveObjectChange, onTimeOffsetData }) => {
     }
     const handleChangeObjectInput = (newObjectInput) => {
         if (activeObject) {
+            console.log("now it is acutally an object ", activeObject);
             onActiveObjectChange(null)
             setActiveObject(null)
         }

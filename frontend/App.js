@@ -68,6 +68,17 @@ const App = () => {
     },
   })
 
+  const [data, setData] = useState();
+
+  // keep track of active ojbect
+  const [activeObject, setActiveObject] = useState(null)
+  
+  // passed into CompassInfo
+  const setActiveObjectCB = (object) => {
+    setActiveObject(object)
+  }
+
+
   useEffect(() => {
     (async () => {
       
@@ -82,22 +93,67 @@ const App = () => {
       });
 
       setLocation(location);
-      const tempUrl = 'http://unpaul.pythonanywhere.com/planet?year=' + year + '&month=' + month + '&day=' + day + '&hour=' + hour + '&minute=' + minute + '&planet=moon&lat=' + location.coords.latitude + '&lng=' + location.coords.longitude;
-      console.log(tempUrl);
-      setUrl(tempUrl);
-      
-      fetch(tempUrl, {
-        method:'GET'
-      })
-      .then(resp => resp.json())
-      .then(article => {
-        setAzimuth(article.azimuth);
-        console.log(article.altitude);
-        setAltitude(article.altitude);
-      })
+
+      if(!activeObject){
+              const tempUrl = 'http://unpaul.pythonanywhere.com/planet?year=' + year + '&month=' + month + '&day=' + day + '&hour=' + hour + '&minute=' + minute + '&planet=' + 'moon' + '&lat=' + location.coords.latitude + '&lng=' + location.coords.longitude;
+              console.log(tempUrl);
+              setUrl(tempUrl);
+              
+              fetch(tempUrl, {
+                method:'GET'
+              })
+              .then(resp => resp.json())
+              .then(article => {
+                setAzimuth(article.azimuth);
+                console.log(article.altitude);
+                setAltitude(article.altitude);
+            })
+        
+            }
+            else{
+              
+              if(activeObject.name == 'Barnards' || activeObject.name == 'Betelgeuse' || activeObject.name == 'Sirius' || activeObject.name == 'Polaris'){
+
+                
+                  const tempUrl = 'http://unpaul.pythonanywhere.com/stars?year=' + year + '&month=' + month + '&day=' + day + '&hour=' + hour + '&minute=' + minute + '&stars=' + activeObject.name + '&lat=' + location.coords.latitude + '&lng=' + location.coords.longitude;
+                  console.log(tempUrl);
+                  setUrl(tempUrl);
+                  
+                  fetch(tempUrl, {
+                    method:'GET'
+                  })
+                  .then(resp => resp.json())
+                  .then(article => {
+                    setAzimuth(article.azimuth);
+                    console.log(article.altitude);
+                    setAltitude(article.altitude);
+                  })
+              }
+              else{
+                const tempUrl = 'http://unpaul.pythonanywhere.com/planet?year=' + year + '&month=' + month + '&day=' + day + '&hour=' + hour + '&minute=' + minute + '&planet=' + activeObject.name + '&lat=' + location.coords.latitude + '&lng=' + location.coords.longitude;
+                console.log(tempUrl);
+                setUrl(tempUrl);
+                
+                fetch(tempUrl, {
+                  method:'GET'
+                })
+                .then(resp => resp.json())
+                .then(article => {
+                  setAzimuth(article.azimuth);
+                  console.log(article.altitude);
+                  setAltitude(article.altitude);
+                })
+
+              }
+        
+            }
 
     })();
-  }, []);
+  }, [activeObject]);
+
+
+
+
 
   let text = 'Waiting..';
   if (errorMsg) {
@@ -106,15 +162,43 @@ const App = () => {
     text = JSON.stringify(location);
   }
 
-  const [data, setData] = useState();
-
-  // keep track of active ojbect
-  const [activeObject, setActiveObject] = useState(null)
   
-  // passed into CompassInfo
-  const setActiveObjectCB = (object) => {
-    setActiveObject(object)
-  }
+//   useEffect(() => {
+//     //console.log("The active object has changed to ", activeObject)
+//     if(!activeObject){
+//       const tempUrl = 'http://unpaul.pythonanywhere.com/planet?year=' + year + '&month=' + month + '&day=' + day + '&hour=' + hour + '&minute=' + minute + '&planet=' + 'moon' + '&lat=' + location.coords.latitude + '&lng=' + location.coords.longitude;
+//       console.log(tempUrl);
+//       setUrl(tempUrl);
+      
+//       fetch(tempUrl, {
+//         method:'GET'
+//       })
+//       .then(resp => resp.json())
+//       .then(article => {
+//         setAzimuth(article.azimuth);
+//         console.log(article.altitude);
+//         setAltitude(article.altitude);
+//     })
+
+//     }
+//     else{
+//       const tempUrl = 'http://unpaul.pythonanywhere.com/planet?year=' + year + '&month=' + month + '&day=' + day + '&hour=' + hour + '&minute=' + minute + '&planet=' + activeObject.name + '&lat=' + location.coords.latitude + '&lng=' + location.coords.longitude;
+//       console.log(tempUrl);
+//       setUrl(tempUrl);
+      
+//       fetch(tempUrl, {
+//         method:'GET'
+//       })
+//       .then(resp => resp.json())
+//       .then(article => {
+//         setAzimuth(article.azimuth);
+//         console.log(article.altitude);
+//         setAltitude(article.altitude);
+//     })
+
+//     }
+    
+// }, [activeObject]);
 
   // keep track of time data
   const [timeOffsetData, setTimeOffsetData] = useState({
@@ -137,6 +221,7 @@ const App = () => {
             <CompassInfo onActiveObjectChange={setActiveObjectCB} onTimeOffsetData={setTimeOffsetDataCB} />
             <CompassContainer azimuth={azimuth}/>
             <Altimeter targetPitch={altitude} />
+            {/* <Text style={{color:'white'}}>Miles Away!!!</Text> */}
           </Center> 
           :
           <Center style={{width: '100%', height: '100%', backgroundColor: 'black'}}>
