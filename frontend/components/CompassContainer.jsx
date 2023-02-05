@@ -7,6 +7,7 @@ import {
 } from 'native-base'
 import Pointer from './Pointer'
 import Compass from './Compass'
+import Galaxy from './Galaxy'
 
 const CompassContainer = ({ azimuth }) => {
   
