@@ -44,6 +44,20 @@ const App = () => {
   const [distance, setDistance] = useState(null);
   const [url, setUrl] = useState(null);
 
+  // keep track of time data
+  const [timeOffsetData, setTimeOffsetData] = useState({
+    hours: 0,
+    datys: 0,
+    months: 0,
+    years: 0
+  })
+
+  // passed into CompassInfo
+  const setTimeOffsetDataCB = (data) => {
+    setTimeOffsetData(data)
+    console.log("data from date offset " , data)
+  }
+
   const theme = extendTheme({
     colors: {
       // Add new color
@@ -83,6 +97,13 @@ const App = () => {
   const [isLoadingObjectData, setIsLoadingObjectData] = useState(false)
   useEffect(() => {
     (async () => {
+      let yeartemp = parseInt(year) + parseInt(timeOffsetData.years);
+      let daytemp = parseInt(day) + parseInt(timeOffsetData.datys);
+      let monthtemp = parseInt(month) + parseInt(timeOffsetData.months);
+      let hourtemp = parseInt(hour) + parseInt(timeOffsetData.hours);
+
+      console.log("year: ", yeartemp, " day: ", daytemp, " month: ", monthtemp, " hour: ", hourtemp)
+
       
       let { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== 'granted') {
@@ -97,7 +118,7 @@ const App = () => {
       setLocation(location);
 
       if(!activeObject){
-              const tempUrl = 'http://unpaul.pythonanywhere.com/planet?year=' + year + '&month=' + month + '&day=' + day + '&hour=' + hour + '&minute=' + minute + '&planet=' + 'moon' + '&lat=' + location.coords.latitude + '&lng=' + location.coords.longitude;
+              const tempUrl = 'http://unpaul.pythonanywhere.com/planet?year=' + yeartemp + '&month=' + monthtemp + '&day=' + daytemp + '&hour=' + hourtemp + '&minute=' + minute + '&planet=' + 'moon' + '&lat=' + location.coords.latitude + '&lng=' + location.coords.longitude;
               console.log(tempUrl);
               setUrl(tempUrl);
               
@@ -120,9 +141,8 @@ const App = () => {
               console.log('load')
               
               if(activeObject.name == 'Barnards' || activeObject.name == 'Betelgeuse' || activeObject.name == 'Sirius' || activeObject.name == 'Polaris'){
-
                 
-                  const tempUrl = 'http://unpaul.pythonanywhere.com/stars?year=' + year + '&month=' + month + '&day=' + day + '&hour=' + hour + '&minute=' + minute + '&stars=' + activeObject.name + '&lat=' + location.coords.latitude + '&lng=' + location.coords.longitude;
+                  const tempUrl = 'http://unpaul.pythonanywhere.com/stars?year=' + yeartemp + '&month=' + monthtemp + '&day=' + daytemp + '&hour=' + hourtemp + '&minute=' + minute + '&stars=' + activeObject.name + '&lat=' + location.coords.latitude + '&lng=' + location.coords.longitude;
                   console.log(tempUrl);
                   setUrl(tempUrl);
                   
@@ -138,7 +158,7 @@ const App = () => {
                   })
               }
               else{
-                const tempUrl = 'http://unpaul.pythonanywhere.com/planet?year=' + year + '&month=' + month + '&day=' + day + '&hour=' + hour + '&minute=' + minute + '&planet=' + activeObject.name + '&lat=' + location.coords.latitude + '&lng=' + location.coords.longitude;
+                const tempUrl = 'http://unpaul.pythonanywhere.com/planet?year=' + yeartemp + '&month=' + monthtemp + '&day=' + daytemp + '&hour=' + hourtemp + '&minute=' + minute + '&planet=' + activeObject.name + '&lat=' + location.coords.latitude + '&lng=' + location.coords.longitude;
                 console.log(tempUrl);
                 setUrl(tempUrl);
                 
@@ -161,7 +181,7 @@ const App = () => {
             setIsLoadingObjectData(false)
 
     })();
-  }, [activeObject]);
+  }, [activeObject, timeOffsetData]);
 
 
 
@@ -176,19 +196,7 @@ const App = () => {
 
 
 
-  // keep track of time data
-  const [timeOffsetData, setTimeOffsetData] = useState({
-    hours: 0,
-    days: 0,
-    months: 0,
-    years: 0
-  })
-
-  // passed into CompassInfo
-  const setTimeOffsetDataCB = (data) => {
-    setTimeOffsetData(data)
-    console.log("data from date offset " , data)
-  }
+  
 
   return (
     <NativeBaseProvider>      
