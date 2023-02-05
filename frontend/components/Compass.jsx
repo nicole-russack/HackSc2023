@@ -5,15 +5,11 @@ import {
     NativeBaseProvider,
     Text,
 } from 'native-base'
-import { Magnetometer } from 'expo-sensors'
 
 const Compass = ({rotation}) => {
 
-    console.log(rotation)
-
     return (
         <Box style={{transform: [{rotate: `${rotation}deg`}]}}>
-            <Text style={{color: 'white'}}>{x}</Text>
             {/* Compass Traingle Pointer */}
             <Center style={{marginBottom: 5}}>
                 <Box style={{width: 0,
