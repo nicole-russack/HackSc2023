@@ -6,10 +6,12 @@ import {
   extendTheme,
   Box,
   Skeleton,
+  Icon,
 } from "native-base"
 import * as Location from "expo-location"
 import { DeviceMotion } from 'expo-sensors'; 
 import moment from 'moment';
+import { Ionicons } from '@expo/vector-icons'
 
 // components
 import Compass from './components/Compass'
@@ -94,8 +96,14 @@ const App = () => {
     setActiveObject(object)
   }
 
-  const [isLoadingObjectData, setIsLoadingObjectData] = useState(false)
+  // loading data object
+  const [isLoadingObjectData, setIsLoadingObjectData] = React.useState(true)
+  const setIsLoadingObjectDataCB = () => {
+    setIsLoadingObjectData(true)
+  }
+
   useEffect(() => {
+
     (async () => {
       let yeartemp = parseInt(year) + parseInt(timeOffsetData.years);
       let daytemp = parseInt(day) + parseInt(timeOffsetData.datys);
@@ -117,6 +125,8 @@ const App = () => {
 
       setLocation(location);
 
+      setIsLoadingObjectData(true)
+
       if(!activeObject){
               const tempUrl = 'http://unpaul.pythonanywhere.com/planet?year=' + yeartemp + '&month=' + monthtemp + '&day=' + daytemp + '&hour=' + hourtemp + '&minute=' + minute + '&planet=' + 'moon' + '&lat=' + location.coords.latitude + '&lng=' + location.coords.longitude;
               console.log(tempUrl);
@@ -136,9 +146,6 @@ const App = () => {
         
             }
             else{
-
-              setIsLoadingObjectData(true)
-              console.log('load')
               
               if(activeObject.name == 'Barnards' || activeObject.name == 'Betelgeuse' || activeObject.name == 'Sirius' || activeObject.name == 'Polaris'){
                 
@@ -194,8 +201,16 @@ const App = () => {
     text = JSON.stringify(location);
   }
 
-
-
+  const distanceStrConversion = (str) => {
+    for (var i=str.length-1; i>=0; i-=3) {
+      console.log("AAA " + i)
+      if (i == 0) {
+        continue
+      }
+      str = str.slice(0, i+1) + ' ' + str.slice(i+1)
+    }
+    return str
+  }
   
 
   return (
@@ -203,13 +218,22 @@ const App = () => {
 
         {location ?
           <Center style={{width: '100%', height: '100%', backgroundColor: 'black'}}>
-            <CompassInfo onActiveObjectChange={setActiveObjectCB} onTimeOffsetData={setTimeOffsetDataCB} />
+            <CompassInfo onActiveObjectChange={setActiveObjectCB} onTimeOffsetData={setTimeOffsetDataCB} startLoading={setIsLoadingObjectDataCB} />
             {isLoadingObjectData ? 
             <Skeleton style={{position: 'absolute', bottom: 225, borderRadius: 200, width: 325, height: 325}} /> :
             <CompassContainer azimuth={azimuth}/>
             }
             <Altimeter targetPitch={altitude} />
-            <Text style={{color:'white'}}>{distance} Miles Away!!!</Text>
+            <Box style={{marginTop: 20, display: 'flex', flexDirection: 'row'}}>
+              <Icon as={Ionicons} name="rocket" size='md' color='white' style={{marginRight: 5}} />
+              <Text style={{color: 'white', fontWeight: 'bold', marginRight: 1}}>{String(distance/92955807).slice(0, 3)}</Text>
+              <Text style={{color: 'white'}}> AU</Text>
+            </Box>
+            <Box style={{marginTop: 20, display: 'flex', flexDirection: 'row', marginTop: 3}}>
+              <Icon as={Ionicons} name="car" size='md' color='white' style={{marginRight: 5}} />
+              <Text style={{color: 'white', fontWeight: 'bold', marginRight: 1}}>{distanceStrConversion(String(distance))}</Text>
+              <Text style={{color: 'white'}}> Miles</Text>
+            </Box>
           </Center> 
           :
           <Center style={{width: '100%', height: '100%', backgroundColor: 'black'}}>

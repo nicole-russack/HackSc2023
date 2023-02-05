@@ -21,7 +21,7 @@ import { Ionicons } from '@expo/vector-icons'
 // services
 import celestialObjectsServices from '../services/celestialObjectsServices'
 
-const CompassInfo = ({ onActiveObjectChange, onTimeOffsetData }) => {
+const CompassInfo = ({ onActiveObjectChange, onTimeOffsetData, startLoading }) => {
 
     // objects
     const [celestialObjects, setCelestialObjects] = useState({
@@ -192,6 +192,12 @@ const CompassInfo = ({ onActiveObjectChange, onTimeOffsetData }) => {
     // active celestial object
     const [activeObject, setActiveObject] = useState(null)
     const activateObject = (filteredObjectIndex) => {
+        
+        startLoading()
+
+        // close suggestions box
+        closeSuggestionsBox()
+        Keyboard.dismiss()
 
         // set active object
         onActiveObjectChange(objectsFiltered[filteredObjectIndex])
@@ -199,12 +205,6 @@ const CompassInfo = ({ onActiveObjectChange, onTimeOffsetData }) => {
 
         // set objectInput to object name
         setObjectInput(objectsFiltered[filteredObjectIndex].name)
-
-        // dismiss keyboard
-        Keyboard.dismiss()
-
-        // close suggestions box
-        closeSuggestionsBox()
     }
 
     // time menu
