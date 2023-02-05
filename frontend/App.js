@@ -1,4 +1,4 @@
-import React from "react"
+import React, {useState, useEffect} from "react"
 import {
   Text,
   Center,
@@ -7,10 +7,11 @@ import {
   Box,
 } from "native-base"
 import * as Location from "expo-location"
-import { useState, useEffect } from "react"
 
 // components
 import Compass from './components/Compass'
+import Pointer from "./components/Pointer"
+import Galaxy from "./components/Galaxy"
 import CompassInfo from './components/CompassInfo'
 
 // Define the config
@@ -24,65 +25,39 @@ export const theme = extendTheme({ config })
 
 const App = () => {
 
+  const [azimuth, setAzimuth] = useState(0);
+  const [altitude, setAltitude] = useState(0);
+  const [heading, setHeading] = useState(0)
+
   const [activeObject, setActiveObject] = useState(null)
   const setActiveObjectCB = (object) => {
     setActiveObject(object)
   }
 
-  // select object
-  const [heading, setHeading] = useState(0);
-
   useEffect(() => {
-    (async () => {
-      
-      console.log('async function called.')
-      
-      // check if user has allowed us to use their location while app is in the foreground
-      const permissions = await Location.getForegroundPermissionsAsync();
-    
-      console.log('permissions checked:', permissions)
-
-      // user has not allowed us to use their location
-      if(!permissions.granted) {
-        console.log('Permissions not granted. Asking now...')
-        const newPermissions = await Location.requestForegroundPermissionsAsync();
-
-        if(!newPermissions.granted) {
-          console.log('Permissions still denied! Returning...')
-          return;
-        }
-      }
-      
-      // listen for changes in the phone's compass heading
-      Location.watchHeadingAsync(data => {
-        let { trueHeading } = data;
-        trueHeading = Math.round(trueHeading);
-        setHeading(trueHeading);
-      })
-      .catch(err => console.log(err));
-    })()
+    fetch('http://unpaul.pythonanywhere.com/planet?year=2023&month=2&day=4&hour=20&minute=31&planet=moon&lat=34.0522&lng=-118.243', {
+      method:'GET'
+    })
+    .then(resp => resp.json())
+    .then(article => {
+      console.log(article)
+      setAzimuth(article.azimuth);
+      setAltitude(article.altitude);
+    })
   }, []);
-  
+
+  const handleHeadingChange = heading => {
+    setHeading(heading);
+  };
+
   return (
-    <NativeBaseProvider>
-
-      <Box style={{width: '100%', height: '100%', backgroundColor: 'black'}}>
-
-        <Box style={{flexGrow: 1}} />
-
-        {/* Compass Info */}
-        <CompassInfo setActiveObject={setActiveObjectCB} />
-
-        {/* Compass */}
-        <Center>
-          <Text style={{color: 'white', fontSize: '30pt', lineHeight: 100 }}>{heading}°</Text>
-          <Compass rotation={-heading}/>
-        </Center>
-
-        <Box style={{flexGrow: 1}} />
-
-      </Box>
-
+    <NativeBaseProvider>      
+      <Center style={{width: '100%', height: '100%', backgroundColor: 'black'}}>
+        {/* <Text style={{color: 'white', fontSize: '30pt', lineHeight: 100 }}>{azimuth}°</Text> */}
+        <Pointer />
+        <Compass azimuth={azimuth} onHeadingChange={handleHeadingChange} />
+        <Galaxy rotation={heading}/>
+      </Center>
     </NativeBaseProvider>
   )
 }
