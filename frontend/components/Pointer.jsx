@@ -6,13 +6,13 @@ import {
     Text,
 } from 'native-base'
 
-const Pointer = ({ targetHeading }) => {
+const Pointer = ({ color }) => {
     
     return (
         <Box style={{
           width: 3,
           height: 45,
-          backgroundColor: 'white',
+          backgroundColor: color,
           zIndex: 40
         }}></Box>
     )

@@ -38,6 +38,7 @@ const App = () => {
   const [azimuth, setAzimuth] = useState(0);
   const [altitude, setAltitude] = useState(0);
   const [heading, setHeading] = useState(0);
+  const [pitch, setPitch] = useState(0);
   var year = moment().utcOffset('-08:00').format('YYYY')
   var month = moment().utcOffset('-08:00').format('MM')
   var day = moment().utcOffset('-08:00').format('DD') - 8
@@ -70,9 +71,9 @@ const App = () => {
 
         <Text style={{color: 'white', fontSize: 30, lineHeight: 100, marginBottom: 20}}>{Math.round(pitch)}°</Text>
         
-        <Pointer />
+        <Pointer color={Math.round(heading) - Math.round(azimuth) === 0 ? '#4ced28' : 'white'}/>
         <Compass azimuth={azimuth} onHeadingChange={handleHeadingChange} />
-        <Altimeter targetPitch={altitude} onPitchChange={handlePitchChange}/>
+        <Altimeter targetPitch={45} onPitchChange={handlePitchChange}/>
         
         <Galaxy rotation={heading}/>
       </Center>
