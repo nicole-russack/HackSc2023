@@ -1,20 +1,11 @@
 import React, {useState, useEffect} from "react"
 import {
   Text,
-  Link,
-  HStack,
   Center,
-  Heading,
-  Switch,
-  useColorMode,
   NativeBaseProvider,
   extendTheme,
-  VStack,
-  View,
   Box,
 } from "native-base"
-import NativeBaseIcon from "./components/NativeBaseIcon"
-import { Platform } from "react-native"
 import * as Location from "expo-location"
 import { DeviceMotion } from 'expo-sensors'; 
 import moment from 'moment';
@@ -24,6 +15,7 @@ import Compass from './components/Compass'
 import Pointer from "./components/Pointer"
 import Galaxy from "./components/Galaxy"
 import Altimeter from "./components/Altimeter"
+import CompassInfo from './components/CompassInfo'
 
 // Define the config
 const config = {
@@ -39,6 +31,7 @@ const App = () => {
   const [azimuth, setAzimuth] = useState(0);
   const [altitude, setAltitude] = useState(0);
   const [heading, setHeading] = useState(0);
+
   const [pitch, setPitch] = useState(0);
   var year = moment().utcOffset('-08:00').format('YYYY')
   var month = moment().utcOffset('-08:00').format('MM')
@@ -63,9 +56,6 @@ const App = () => {
         accuracy: Location.Accuracy.Low 
       });
       setLocation(location);
-      console.log("this is the location" , location.coords.latitude);
-      console.log("this is the location" , location.coords.longitude);
-      console.log("this is the time ", year, " ", month, " ", day);
       const tempUrl = 'http://unpaul.pythonanywhere.com/planet?year=' + year + '&month=' + month + '&day=' + day + '&hour=' + hour + '&minute=' + minute + '&planet=moon&lat=' + location.coords.latitude + '&lng=' + location.coords.longitude;
       setUrl(tempUrl);
       
@@ -74,7 +64,6 @@ const App = () => {
       })
       .then(resp => resp.json())
       .then(article => {
-        console.log(article)
         setAzimuth(article.azimuth);
         setAltitude(article.altitude);
       })
@@ -98,6 +87,12 @@ const App = () => {
 
   const handlePitchChange = newPitch => {
     setPitch(newPitch);
+  }
+
+  // keep track of active ojbect
+  const [activeObject, setActiveObject] = useState(null)
+  const setActiveObjectCB = (object) => {
+    setActiveObject(object)
   }
 
   return (
