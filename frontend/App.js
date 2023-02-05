@@ -35,9 +35,10 @@ const App = () => {
   const [azimuth, setAzimuth] = useState(0);
   const [altitude, setAltitude] = useState(0);
   const [heading, setHeading] = useState(0);
+  const [pitch, setPitch] = useState(0);
 
   useEffect(() => {
-    fetch('http://unpaul.pythonanywhere.com/planet?year=2023&month=2&day=4&hour=21&minute=25&planet=moon&lat=34.0522&lng=-118.243', {
+    fetch('http://unpaul.pythonanywhere.com/planet?year=2023&month=2&day=4&hour=22&minute=00&planet=moon&lat=34.0522&lng=-118.243', {
       method:'GET'
     })
     .then(resp => resp.json())
@@ -48,18 +49,23 @@ const App = () => {
     })
   }, []);
 
-  const handleHeadingChange = heading => {
-    setHeading(heading);
+  const handleHeadingChange = newHeading => {
+    setHeading(newHeading);
   };
+
+  const handlePitchChange = newPitch => {
+    setPitch(newPitch);
+  }
 
   return (
     <NativeBaseProvider>      
       <Center style={{width: '100%', height: '100%', backgroundColor: 'black'}}>
+
+        <Text style={{color: 'white', fontSize: 30, lineHeight: 100, marginBottom: 20}}>{Math.round(pitch)}°</Text>
         
         <Pointer />
         <Compass azimuth={azimuth} onHeadingChange={handleHeadingChange} />
-
-        <Altimeter targetPitch={altitude} />
+        <Altimeter targetPitch={altitude} onPitchChange={handlePitchChange}/>
         
         <Galaxy rotation={heading}/>
       </Center>

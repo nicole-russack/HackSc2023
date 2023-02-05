@@ -9,17 +9,20 @@ import {
 import { Dimensions } from 'react-native'
 
 // the height prop is from -1 (bottom of screen) to 1 (the top)
-const AltitudeMarker = ({ height }) => {
+const AltitudeMarker = ({ altitude }) => {
   
-  const screenHeight = Dimensions.get('screen').height;
-  const bottom = (screenHeight / 2) + height * (screenHeight / 2);
+  const screenHeight = Dimensions.get('window').height;
+  const size = altitude / 90 * 325;
 
   const styles = {
     position: 'absolute',
-    bottom,
-    width: 5000,
-    height: 4,
-    backgroundColor: 'white'
+    backgroundColor: 'transparent',
+    borderWidth: 3,
+    borderColor: 'white',
+    width: size,
+    height: size,
+    borderRadius: 325,
+    transform: [{translateY: 82}]
   }
 
   return (
