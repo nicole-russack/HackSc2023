@@ -120,7 +120,7 @@ const CompassInfo = ({ onActiveObjectChange, onTimeOffsetData }) => {
         if (activeObject) {
             console.log("now it is acutally an object ", activeObject);
             onActiveObjectChange(null)
-            onActiveObjectChange(null)
+            setActiveObject(null)
         }
         // set input
         setObjectInput(newObjectInput)
@@ -173,11 +173,9 @@ const CompassInfo = ({ onActiveObjectChange, onTimeOffsetData }) => {
     const [activeObject, setActiveObject] = useState(null)
     const activateObject = (filteredObjectIndex) => {
 
-        console.log('activate ' + objectsFiltered[filteredObjectIndex].name)
-
         // set active object
         onActiveObjectChange(objectsFiltered[filteredObjectIndex])
-        onActiveObjectChange(objectsFiltered[filteredObjectIndex])
+        setActiveObject(objectsFiltered[filteredObjectIndex])
 
         // set objectInput to object name
         setObjectInput(objectsFiltered[filteredObjectIndex].name)
@@ -213,7 +211,7 @@ const CompassInfo = ({ onActiveObjectChange, onTimeOffsetData }) => {
         return objectsFiltered.map((object, index) =>
             <Box key={index} style={{overflow: 'hidden'}}>
                 <Pressable onPress={() => activateObject(index)} style={{height: 40, display: 'flex', justifyContent: 'center'}}>
-                <Text style={{color: 'white'}}>{object.name}</Text>
+                    <Text style={{color: 'white'}}>{object.name}</Text>
                 </Pressable>
                 <Divider style={{backgroundColor: 'gray'}} />
             </Box>
