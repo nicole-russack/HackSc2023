@@ -75,7 +75,7 @@ def get_articles():
   lng = request.args.get('lng')
 
   print(request.args)
-
+  print("year: " + year)
 
   data = getDirection(int(year), int(month), int(day), int(hour), int(minute), planet, float(lat), float(lng))
   print(data)

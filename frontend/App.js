@@ -38,7 +38,7 @@ const App = () => {
   const [heading, setHeading] = useState(0)
 
   useEffect(() => {
-    fetch('http://192.168.1.36:3000/?year=2023&month=2&day=4&hour=18&minute=4&planet=moon&lat=34.0522&lng=-118.243', {
+    fetch('http://unpaul.pythonanywhere.com/?year=2023&month=2&day=4&hour=20&minute=29&planet=moon&lat=34.0522&lng=-118.243', {
       method:'GET'
     })
     .then(resp => resp.json())
@@ -56,7 +56,7 @@ const App = () => {
   return (
     <NativeBaseProvider>      
       <Center style={{width: '100%', height: '100%', backgroundColor: 'black'}}>
-        {/* <Text style={{color: 'white', fontSize: '30pt', lineHeight: 100 }}>{heading}°</Text> */}
+        {/* <Text style={{color: 'white', fontSize: '30pt', lineHeight: 100 }}>{azimuth}°</Text> */}
         <Pointer />
         <Compass azimuth={azimuth} onHeadingChange={handleHeadingChange} />
         <Galaxy rotation={heading}/>
