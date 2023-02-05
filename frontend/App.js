@@ -124,6 +124,12 @@ const _unsubscribe = () => {
     setPitch(newPitch);
   }
 
+  // keep track of active ojbect
+  const [activeObject, setActiveObject] = useState(null)
+  const setActiveObjectCB = (object) => {
+    setActiveObject(object)
+  }
+
   return (
     <NativeBaseProvider>      
       
