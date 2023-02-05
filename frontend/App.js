@@ -1,4 +1,4 @@
-import React from "react"
+import React, {useState, useEffect} from "react"
 import {
   Text,
   Link,
@@ -33,6 +33,18 @@ export const theme = extendTheme({ config })
 
 const App = () => {
 
+  useEffect(() => {
+    fetch('http://192.168.1.30:3000/?year=2023&month=2&day=3&hour=12&minute=31&planet=mars&lat=34.0522&lng=118.243', {
+      method:'GET'
+    })
+    .then(resp => resp.json())
+    .then(article => {
+      setData(article)
+    })
+  
+  }, [])
+  
+
   const [azimuth, setAzimuth] = useState(45)
     
   return (
@@ -42,7 +54,6 @@ const App = () => {
         <Pointer />
         <Compass azimuth={azimuth} />
       </Center>
-
     </NativeBaseProvider>
   )
 }
