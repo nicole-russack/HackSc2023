@@ -93,25 +93,25 @@ const CompassInfo = ({ onActiveObjectChange, onTimeOffsetData }) => {
     const [isFilteringObjects, setIsFilteringObjects] = useState(false)
     const filterObjects = () => {
 
-    // if user input blank, save filteredObjects as allCelestialObjects
-    if (objectInput.length < 1) {
-        setObjectsFiltered(allCelestialObjects)
-    } else {
+        // if user input blank, save filteredObjects as allCelestialObjects
+        if (objectInput.length < 1) {
+            setObjectsFiltered(allCelestialObjects)
+        } else {
 
-        // get current user input
-        const currObjectInput = objectInput.toLowerCase()
+            // get current user input
+            const currObjectInput = objectInput.toLowerCase()
 
-        // set is filtering
-        setIsFilteringObjects(true)
+            // set is filtering
+            setIsFilteringObjects(true)
 
-        // filter
-        var _objectsFiltered = []
-        for (var i=0; i<allCelestialObjects.length; ++i) {
-        // if this object starts with the same string as currently in input, push to objectsFiltered
-            if (allCelestialObjects[i].name.toLowerCase().startsWith(currObjectInput)) {
-                _objectsFiltered.push(allCelestialObjects[i])
+            // filter
+            var _objectsFiltered = []
+            for (var i=0; i<allCelestialObjects.length; ++i) {
+            // if this object starts with the same string as currently in input, push to objectsFiltered
+                if (allCelestialObjects[i].name.toLowerCase().startsWith(currObjectInput)) {
+                    _objectsFiltered.push(allCelestialObjects[i])
+                }
             }
-        }
             // save objectsFiltered
             setObjectsFiltered(_objectsFiltered)
         }
@@ -217,7 +217,7 @@ const CompassInfo = ({ onActiveObjectChange, onTimeOffsetData }) => {
                 <Divider style={{backgroundColor: 'gray'}} />
             </Box>
         )
-    }, [objectInput])
+    }, [objectsFiltered])
 
     return (
         <Center>
