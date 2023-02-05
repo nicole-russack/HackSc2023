@@ -16,6 +16,7 @@ import Pointer from "./components/Pointer"
 import Galaxy from "./components/Galaxy"
 import Altimeter from "./components/Altimeter"
 import CompassInfo from './components/CompassInfo'
+import CompassContainer from "./components/CompassContainer";
 
 // Define the config
 const config = {
@@ -30,8 +31,6 @@ const App = () => {
 
   const [azimuth, setAzimuth] = useState(0);
   const [altitude, setAltitude] = useState(1);
-  const [heading, setHeading] = useState(0);
-  const [pitch, setPitch] = useState(0);
   
   var year = moment().utcOffset('-08:00').format('YYYY')
   var month = moment().utcOffset('-08:00').format('MM')
@@ -84,14 +83,6 @@ const App = () => {
 
   const [data, setData] = useState();
 
-  const handleHeadingChange = heading => {
-    setHeading(heading);
-  };
-
-  const handlePitchChange = newPitch => {
-    setPitch(newPitch);
-  }
-
   // keep track of active ojbect
   const [activeObject, setActiveObject] = useState(null)
   const setActiveObjectCB = (object) => {
@@ -115,10 +106,8 @@ const App = () => {
 
         {location ?
           <Center style={{width: '100%', height: '100%', backgroundColor: 'black'}}>
-            <Pointer color={Math.round(heading) === Math.round(azimuth) ? '#4ced28' : 'white'}/>
-            <Compass azimuth={azimuth} onHeadingChange={handleHeadingChange} />
-            <Altimeter targetPitch={altitude} onPitchChange={handlePitchChange} />
-            <Galaxy rotation={heading}/>
+            <CompassContainer azimuth={azimuth}/>
+            <Altimeter targetPitch={altitude} />
           </Center> 
           :
           <Center style={{width: '100%', height: '100%', backgroundColor: 'black'}}>
